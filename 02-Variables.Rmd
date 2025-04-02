@@ -1,0 +1,113 @@
+```{r setup, include=FALSE}
+if (!requireNamespace("rextendr", quietly = TRUE)) {
+  install.packages("rextendr")
+}
+library(rextendr)
+library(knitr)
+knitr::opts_chunk$set(error = TRUE)
+# Register Rust as a language engine for knitr
+knit_engines$set(rust = function(options) {
+  temp_file <- tempfile(fileext = ".rs")
+  writeLines(options$code, temp_file)
+  tryCatch({
+  rextendr::rust_source(temp_file)
+}, error = function(e) {
+  message("⚠️ Rust Compilation Error: ", e$message)
+})
+  ""
+})
+
+```
+
+# Introduction
+
+Programming in Rust is totally different from coding in C or C++ - and of cause also very different from coding in R or Python. I will talk about typed variables later on, but want to first highlight the security features Rust implements.
+
+In Rust a variable is 'owned' by a function - possibly comparable to R. But instead of R which simply copies the data into every function in Rust the variables can not be changed inside of the function. It is especially prohibited to e.g. give a function a file object to write to. Only the function that did create the file object can write to it.
+
+This is also true for e.g a HashMap that stores objects (some data) in combination with e.g. a string key. If you want to modify the stored object you need the class that 'owns' this object make the changes. I have not hidden any of these problems inside this tutorial. That is something you need to learn the hard way.
+
+# Variables
+
+Rust uses strong typed variables. This does mean that you need to define your variables as a specific type.
+As an example you can store integer values as u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, usize or integer.
+All of these types can not be compared against each other. So if you want to create some data structures it does help to choose the same type for all data (eg. u64). 
+The difference between the integer types are the range of values they can contain: u8 and i8 are 8 bit long whereas u128 and i128 are 128 bit long; the u types are unsigned and can not contain negative values. 
+Usize is the default integer type and is dependent on your computer type. On 64 bit computers it is the same as a u64 - but you still can not compare it directly to u64.
+
+
+## Examples
+
+Here I will show you the minimal Rust programming:
+
+- define a variable
+- do a small calculation
+
+### Integers
+
+Using RStudio at the moment I can show you how you define a variable in Rust:
+
+```{extendr}
+  let x = 5;
+  let y = 7;
+  let z = x*y;
+
+  rprintln!("{x} * {y} = {z}");
+
+```
+
+The print statement here is not Rust but specific for the R extension rextendr.
+The Rust equivalent to the rprintln!() is println!().
+Please ignore my usage of rprintln! - it is an artifact from me using Rstudio to compile this tutorial.
+
+The interesting part here is how you define variables: "let \<varname\>:\<type\> = \<value\>;"
+
+Why did we not define the type of integer we want to store?
+
+Here Rust silently assumes you want to use the default integer type usize.
+If you want to specify the integer type you want to use here you could write the following:
+
+```{extendr}
+  let x:u8 = 5;
+  let y:u8 = 7;
+  let z = x*y;
+
+  rprintln!("{x} * {y} = {z}");
+
+```
+
+OK - this works in RStudio - what about breaking this code?
+
+
+## Create a new Rust program 
+
+Rust is a compiled language and therefore interacting with it using a jupyter notebook or Rmd file does limit the language a lot.
+Hence it makes more sense to compile Rust programs and use them on the command line. 
+
+As an example of why - I deliberately broke the integer example:
+
+```
+  let x:u8 = 5;
+  let y:u16 = 7;
+  let z = x*y;
+
+  println!("{x} * {y} = {z}");
+
+```
+
+Compiling this in RStudio breaks the html generation and I can not show the error here using this code. 
+
+
+```{bash}
+rustc failing_rust.rs
+```
+
+
+And further on:
+
+```{bash}
+rustc  --explain E0277
+```
+
+Isn't that beatuful? How informative this output is?
+If the Rust compiler can not help you you can always try an AI assistant to help you. I had good experiences if my idea could be implementd in Rust and a lot of wasted time with Rust incompatible ideas.

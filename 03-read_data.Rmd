@@ -1,0 +1,203 @@
+
+# Implementation
+
+Now let's look into creating a Rust package that executes a Simulated Annealing based Clustering on a text table of numeric values.
+
+First we will create a new package structure for your tool:
+
+```
+cargo new --bin simulated_annealing
+```
+
+This will create the folder, populate it with some files and prepare it for git usage.
+For later use we create a simulated_annealing/tests folder and a simulated_annealing/src/lib.rs file.
+
+I normally put as much code into the library and keep the script as slender as possible.
+
+Which data structures do we need?
+
+ 1. The 'expression' data
+ 2. The rows <-> cluster connections
+ 3. The number of clusters asked for
+ 4. The actual temperature of the system
+ 
+** Let's create the object**
+
+Open the src/lib.rs file and add this:
+
+```
+
+pub struct SimulatedAnnealing {
+    /// the normalized expression data
+    pub data: Vec<Vec<f32>>,
+    /// the names for each row
+    rownames: Vec<String>,
+    /// the cluster ids for each row of data
+    clusters: Vec<usize>,
+    /// expected clusters k
+    k: usize,
+    /// the actual temerature
+    temp:f32,
+
+}
+impl SimulatedAnnealing {
+    pub fn new( file_path:&str, k:usize, temp:f32, split:char ) -> Self{
+
+        let (rownames, data) = Self::read_table_with_names( file_path, split ).unwrap();
+
+        let clusters: Vec<usize> = rownames.iter().map(|_| rand::thread_rng().gen_range(1..=k)).collect();
+
+        Self{
+            data,
+            rownames,
+            clusters,
+            clusters_energy: vec![0.0; k ],
+            temp,
+        }
+    }
+}
+
+```
+
+This will define a class with the variables data, rownames, clusters, k and temp as well as the new() function for this class, which in turn populates these variables with initial values. Save the file and try to compile your project using
+
+```{bash}
+make step1 |  sed 's/\x1B\[[0-9;]*m//g'
+```
+
+Right - we try to create the random cluster info and have not loaded the required package. That is simple to do in Rust:
+
+```
+cargo add rand
+```
+Do not forget to also load that library into the lib.rs. I the top of that file add ``use rand;``.
+
+
+The read_table function is more complicated.
+I normally out-source these simple, but tedious steps to ChatGPT or an other AI helper, but these are the steps we need to take:
+
+ 1. create a Path from the &str file_name
+ 2. open that Path
+ 3. create a BuffReader from that File to more efficiently read from it
+ 4. iterate over the lines and
+ 5. split the line by sep (could be user defined too - or?)
+ 6. use the first entry as rowname (String) and the rest as numeric (f32). 
+
+Add this new function to your class:
+
+```
+use std::path::Path;
+use std::fs::File;
+use std::io::{BufReader, BuffRead};
+use rand::Rng;
+    pub fn read_table_with_names(file_path: &str, split: char ) -> Result<( Vec<String>, Vec<Vec<f32>>), String> {
+        let path = Path::new(file_path);
+        let file = match File::open(path){
+          Ok(f) => f,
+          Err(e) => {
+            return Err( format!("Failed to open file: {}", e) )
+          }
+        };
+        let reader = BufReader::new(file);
+
+        let mut data = Vec::new();
+        let mut rownames= Vec::new();
+
+        for (line_num, line) in reader.lines().enumerate() {
+            let line = line.map_err(|e| format!("Error reading line {}: {}", line_num + 1, e))?;
+            let mut parts = line.split( split );
+
+            let row_name = parts.next().ok_or_else(|| format!("Missing row name at line {}", line_num + 1))?;
+            if row_name == "" {
+                // ignore column names
+                continue;
+            }
+            rownames.push( row_name.to_string() );
+
+            let values: Result<Vec<f32>, String> = parts
+                .map(|num| num.parse::<f32>().map_err(|_| format!("Invalid number '{}' at line {}", num, line_num + 1)))
+                .collect();
+
+            let values = values.unwrap(); // will die on error
+            data.push( values );
+        }
+
+        Ok( (rownames,data) )
+    }
+```
+
+## There is a lot of new stuff in this function:
+
+The return type - what is a Result<( Vec<String>, Vec<Vec<f32>>), String>?
+This allows us to fail on the task. We can this way either return the tupel with the two vectors or a String,
+that would contain our error message(s). We create our error in four positions in our function: (1) when trying to open the
+file using a match construct (2) when reading a line from the file using map_err (3) getting the rowname using ok_or_else and finally (4) when a value in the table can not be converted to a f32 number using map_err again.
+
+Why are there so many ways to create the error? I actually asked Chatty exactly that and you can read the rather long answer here: \@ref(error-handling).
+
+In Short there are Results that allow for an error being returned if something fails and an Option which only allows None to be returned is something fails. For more info please read that: \@ref(error-handling).
+
+So if we re-compile this - will it work? If not just follow the compiler's help ;-)
+
+
+## Add a test for this
+
+At the moment the library does just compile - we have no way to test it.
+
+It is highly advisable to add tests for as many functions as you can! I asked Chatty for some text again and you can red it here: \@ref(testing). For the private read_table_with_names function we should create a unit test in the same file as the function. At the end of the file - outside the class functions block add this:
+
+
+```
+#[cfg(test)]
+mod tests {
+    use super::*; // Import everything from the parent module
+
+    #[test]
+    fn test_read_data() {
+        match SimulatedAnnealing::read_table_with_names( "tests/data/Spellman_Yeast_Cell_Cycle.tsv", '\t' ){
+            Ok((rownames, data)) => {
+                assert_eq!(data.len(), 256, "we have 256 rows");
+                assert_eq!(data[0].len(), 16, "we have 16 cols");
+                assert_eq!(rownames.len(), data.len(), "rownames and data have the same dimension (isch)")
+            }Err(e) =>{
+                panic!("Could not read the tsv file! : {e}");
+            }
+        }
+    }
+}
+```
+
+For this to work we need to create the folder in our package and download [this file](https://github.com/shambam/R_programming_1/raw/refs/heads/main/Spellman_Yeast_Cell_Cycle.tsv) there.
+
+```
+mkdir -p tests/data
+wget https://github.com/shambam/R_programming_1/raw/refs/heads/main/Spellman_Yeast_Cell_Cycle.tsv -O tests/data/Spellman_Yeast_Cell_Cycle.tsv
+```
+
+Now you can compile and test the reading of the data:
+
+```{bash}
+# you run this: cargo test -r
+
+make step2 |  sed 's/\x1B\[[0-9;]*m//g'
+```
+
+Cool! First class first class function and first test - and everything is working - or?
+
+Lets also add a test for the new function. This function should be accessible from outside and therefore we should create a new test file. Create the file ``tests/test-SimulatedAnnealing.rs`` and fill it with this:
+
+```
+use simulated_annealing::SimulatedAnnealing; // Replace `my_crate` with your actual crate name
+
+#[test]
+fn test_simulated_annealing() {
+    let sa = SimulatedAnnealing::new( "tests/data/Spellman_Yeast_Cell_Cycle.tsv", 10, 200.0, '\t' ); // Assuming `new()` is implemented
+    assert_eq!(sa.data.len(), 256, "we have 256 rows");
+    assert_eq!(sa.data[0].len(), 16, "we have 16 cols");
+}
+```
+
+Test this again.
+
+So all that is left is to implement the main simulated annealing algorithm. Should be rather simple?
+ 

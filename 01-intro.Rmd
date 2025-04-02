@@ -1,0 +1,48 @@
+# Using Rust to Implement the Simulatied Annealing Algorithm
+
+This tutorial is for experienced Bioinformaticians that have been programming in R and/or Python or comparable scripting languages. It does of cause not hurt if you program in C, C++ or Julia either.
+
+## The Problem
+
+The algorithm I have decided to use is the one given to my students on the R programming I course. It is clustering expression data using simulated annealing. It's a simple algorithm to understand and program, but is has enough scope where solutions can vary widely. It also contains what most of what we need to know about a language, file reading, control flow, containers, maths etc.
+
+
+### The Data
+
+For this problem we will use yeast cell-cycle data which is small timecourse dataset of 250 genes and 16 timepoints. You can get the data [here](https://github.com/shambam/R_programming_1/blob/main/Spellman_Yeast_Cell_Cycle.tsv). Yeast in liquid culture have been arrested at the same point in cell-cycle, and then released so they undergo two cell divisions in synchrony. They were sampled at 16 timepoints and then arrayed. This means there are some nice looking clusters in the data and will be clear if your implementation is working.
+
+## Simulated annealing
+
+We can think of well clustered data having low energy, in that each cluster is tight and has little within cluster variance. If we calculate the variance *within* each cluster and sum over all clusters we get the total variance (energy) of the system. To measure the distance between two genes $i$ and $j$ over $t$ timepoints we do:
+
+$$d_{ij}=\sqrt{\sum{(g^{i}_t-g^{j}_t)^2}}$$
+
+so to measure the energy (total variance) of a clustering we sum the pairwise distances for each cluster $K$, and then sum over all $K$s and them divide by $K$.
+
+$$ E(K)=\frac{1}{K}\sum^K_{k=1} \left[ \sum_{i\epsilon Ck}\sum_{j\epsilon Ck} d_{ij}\right] $$
+
+For a well clustered data, $E(K)$ should be as **small** as possible. Lets say we have 1000 genes, and we want to partition them into 10 clusters. The number of combinations is too high for us to try each one to brute force a true $E$. This is why we use a *heuristic* algorithm to get us as close to the solution as possible in a smaller amount of time.
+
+If we tried to visualise the energy landscape we can imagine it might look something like this:
+
+```{r, out.width='60%', fig.align='center',echo=FALSE}
+knitr::include_graphics(rep("images/EnergyLandscape.png"))
+```
+
+The idea behind simulated annealing is that "bad" moves are also allowed for a proportion of the iterations allowing exploration of the energy landscape, thereby avoiding local minima.
+
+## The Algorithm
+
+I do not want to focus too much onto the algoirithm here as the main forcus is on the Rust implementation, but the steps that need to be run are as follows:
+
+  1. Load the data and scale it so each gene's value lie between 0 and 1
+  2. Create a random cluster information and calculate the energy of this clustering
+  3. Randomly shift any gene from it's cluster to another
+  4. Calculate the new energy and check if the new cluster info should be kept; do that
+  5. Repeat 3 and 4 until for n iterations
+  6. report the cluster information - if possible create plots
+  
+And all of that in Rust ;-)
+
+
+
