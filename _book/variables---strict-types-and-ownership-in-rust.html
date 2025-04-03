@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | Simulated Annealing in Rust</title>
+  <title>Chapter 2 Variables - Strict Types and Ownership in Rust | Simulated Annealing in Rust</title>
   <meta name="description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
 This should be a one day excercise and requires a previouse programming experience, but not necessarily Rust experience.</p>" />
   <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | Simulated Annealing in Rust" />
+  <meta property="og:title" content="Chapter 2 Variables - Strict Types and Ownership in Rust | Simulated Annealing in Rust" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
@@ -17,7 +17,7 @@ This should be a one day excercise and requires a previouse programming experien
   <meta name="github-repo" content="stela2502/tutorial_rust_simulated_annealing" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | Simulated Annealing in Rust" />
+  <meta name="twitter:title" content="Chapter 2 Variables - Strict Types and Ownership in Rust | Simulated Annealing in Rust" />
   
   <meta name="twitter:description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
 This should be a one day excercise and requires a previouse programming experience, but not necessarily Rust experience.</p>" />
@@ -33,8 +33,8 @@ This should be a one day excercise and requires a previouse programming experien
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-
+<link rel="prev" href="using-rust-to-implement-the-simulatied-annealing-algorithm.html"/>
+<link rel="next" href="implementation.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -258,19 +258,159 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="variables---strict-types-and-ownership-in-rust" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Variables - Strict Types and Ownership in Rust<a href="variables---strict-types-and-ownership-in-rust.html#variables---strict-types-and-ownership-in-rust" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="strict-types-in-rust" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Strict Types in Rust<a href="variables---strict-types-and-ownership-in-rust.html#strict-types-in-rust" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Rust is a statically typed language, meaning you <strong>must define the types</strong> of variables and data structures explicitly. This ensures <strong>type safety</strong> at <strong>compile time</strong>.</p>
+<div id="example-1-strict-typing-in-rust" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Example 1: Strict Typing in Rust<a href="variables---strict-types-and-ownership-in-rust.html#example-1-strict-typing-in-rust" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s start by defining variables with specific types:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-1" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb1-2"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-2" tabindex="-1"></a>    <span class="kw">let</span> integer<span class="op">:</span> <span class="dt">i32</span> <span class="op">=</span> <span class="dv">10</span><span class="op">;</span>  <span class="co">// 32-bit signed integer</span></span>
+<span id="cb1-3"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-3" tabindex="-1"></a>    <span class="kw">let</span> floating_point<span class="op">:</span> <span class="dt">f64</span> <span class="op">=</span> <span class="dv">10.5</span><span class="op">;</span>  <span class="co">// 64-bit floating-point number</span></span>
+<span id="cb1-4"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-4" tabindex="-1"></a>    <span class="kw">let</span> boolean<span class="op">:</span> <span class="dt">bool</span> <span class="op">=</span> <span class="cn">true</span><span class="op">;</span>  <span class="co">// Boolean value</span></span>
+<span id="cb1-5"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-6" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">&quot;Integer: {}, Floating-point: {}, Boolean: {}&quot;</span><span class="op">,</span> integer<span class="op">,</span> floating_point<span class="op">,</span> boolean)<span class="op">;</span></span>
+<span id="cb1-7"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-8" tabindex="-1"></a>    <span class="co">// Uncomment the below line to see what happens when types don&#39;t match</span></span>
+<span id="cb1-9"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-9" tabindex="-1"></a>    <span class="co">// let incorrect_type: i32 = 10.5;  // ERROR: mismatched types</span></span>
+<span id="cb1-10"><a href="variables---strict-types-and-ownership-in-rust.html#cb1-10" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div id="what-happens-here" class="section level4 hasAnchor" number="2.1.1.1">
+<h4><span class="header-section-number">2.1.1.1</span> What happens here?<a href="variables---strict-types-and-ownership-in-rust.html#what-happens-here" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>Rust expects each variable to be of the specified type (<code>i32</code>, <code>f64</code>, <code>bool</code>).</li>
+<li>If you try to assign a value with an incompatible type (e.g., <code>10.5</code> to an <code>i32</code>), the <strong>compiler will throw an error</strong>.</li>
+</ul>
+<p>If you uncomment the <code>incorrect_type</code> line, the compiler will catch it:</p>
+<pre><code>error[E0308]: mismatched types
+ --&gt; src\main.rs:8:9
+  |
+8 |     let incorrect_type: i32 = 10.5;
+  |         ^^^^^^^^^^^^^^ expected integer, found floating-point number</code></pre>
+<p>This strict checking ensures type safety and helps avoid runtime errors related to type mismatches.</p>
+</div>
+<div id="key-points" class="section level4 hasAnchor" number="2.1.1.2">
+<h4><span class="header-section-number">2.1.1.2</span> Key Points:<a href="variables---strict-types-and-ownership-in-rust.html#key-points" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><strong>Rust enforces type correctness at compile time</strong>. You <strong>cannot implicitly convert between types</strong> (like R or Python might allow).</li>
+<li><strong>Explicit type annotations</strong> help prevent unintended errors and increase code clarity.</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="ownership-in-rust" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Ownership in Rust<a href="variables---strict-types-and-ownership-in-rust.html#ownership-in-rust" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>One of Rust’s most important and unique features is its <strong>ownership model</strong>. It ensures <strong>memory safety</strong> by enforcing strict rules about <strong>who owns data</strong> and when data is <strong>dropped (freed)</strong>.</p>
+<div id="ownership-rules-in-rust" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Ownership Rules in Rust:<a href="variables---strict-types-and-ownership-in-rust.html#ownership-rules-in-rust" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Each value in Rust has a single owner</strong>.</li>
+<li><strong>When the owner goes out of scope</strong>, Rust <strong>automatically frees the memory</strong>.</li>
+<li><strong>You cannot have more than one owner</strong> at a time. If you want to <strong>transfer ownership</strong>, you use <strong>borrowing</strong> or <strong>cloning</strong>.</li>
+</ol>
+</div>
+<div id="example-2-ownership-in-rust" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Example 2: Ownership in Rust<a href="variables---strict-types-and-ownership-in-rust.html#example-2-ownership-in-rust" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s look at a simple example that demonstrates ownership.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-1" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb3-2"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-2" tabindex="-1"></a>    <span class="kw">let</span> s1 <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">&quot;Hello, Rust!&quot;</span>)<span class="op">;</span>  <span class="co">// s1 owns the String</span></span>
+<span id="cb3-3"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-4" tabindex="-1"></a>    <span class="kw">let</span> s2 <span class="op">=</span> s1<span class="op">;</span>  <span class="co">// Ownership of the String is moved from s1 to s2</span></span>
+<span id="cb3-5"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-5" tabindex="-1"></a>    <span class="co">// println!(&quot;{}&quot;, s1);  // ERROR: s1 is no longer valid</span></span>
+<span id="cb3-6"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-6" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-7" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> s2)<span class="op">;</span>  <span class="co">// This works, since s2 is the owner now</span></span>
+<span id="cb3-8"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-8" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-9" tabindex="-1"></a>    <span class="co">// After s2 goes out of scope, the memory will be freed.</span></span>
+<span id="cb3-10"><a href="variables---strict-types-and-ownership-in-rust.html#cb3-10" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div id="explanation" class="section level4 hasAnchor" number="2.2.2.1">
+<h4><span class="header-section-number">2.2.2.1</span> Explanation:<a href="variables---strict-types-and-ownership-in-rust.html#explanation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p><code>s1</code> is the <strong>owner</strong> of the <code>String</code> object.</p></li>
+<li><p>When <code>s1</code> is assigned to <code>s2</code>, <strong>ownership</strong> of the <code>String</code> is <strong>moved</strong> from <code>s1</code> to <code>s2</code>.</p></li>
+<li><p>After the move, <code>s1</code> is no longer valid, and trying to use it (e.g., <code>println!("{}", s1)</code>) will result in a <strong>compiler error</strong>:</p>
+<pre><code>error[E0382]: use of moved value: `s1`
+ --&gt; src\main.rs:7:22
+  |
+7 |     println!(&quot;{}&quot;, s1);  // ERROR: value moved, cannot use
+  |                      ^^^ value moved here</code></pre></li>
+</ul>
+<p>This behavior is critical because it ensures that <strong>Rust doesn’t accidentally create multiple owners</strong> of the same data (which could lead to <strong>data races or memory leaks</strong>).</p>
+</div>
+</div>
+<div id="example-3-borrowing-in-rust" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Example 3: Borrowing in Rust<a href="variables---strict-types-and-ownership-in-rust.html#example-3-borrowing-in-rust" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Rust allows you to <strong>borrow</strong> data, either immutably or mutably.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-1" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb5-2"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-2" tabindex="-1"></a>    <span class="kw">let</span> s1 <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">&quot;Hello, Rust!&quot;</span>)<span class="op">;</span>  <span class="co">// s1 owns the String</span></span>
+<span id="cb5-3"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-4" tabindex="-1"></a>    <span class="co">// Immutable Borrowing</span></span>
+<span id="cb5-5"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-5" tabindex="-1"></a>    <span class="kw">let</span> s2 <span class="op">=</span> <span class="op">&amp;</span>s1<span class="op">;</span>  <span class="co">// s2 borrows s1 immutably</span></span>
+<span id="cb5-6"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-6" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> s2)<span class="op">;</span>  <span class="co">// This works because s2 is just borrowing s1</span></span>
+<span id="cb5-7"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-8" tabindex="-1"></a>    <span class="co">// Mutable Borrowing</span></span>
+<span id="cb5-9"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-9" tabindex="-1"></a>    <span class="kw">let</span> <span class="kw">mut</span> s3 <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">&quot;Mutable borrow!&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-10"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-10" tabindex="-1"></a>    <span class="kw">let</span> s4 <span class="op">=</span> <span class="op">&amp;</span><span class="kw">mut</span> s3<span class="op">;</span>  <span class="co">// s4 borrows s3 mutably</span></span>
+<span id="cb5-11"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-11" tabindex="-1"></a>    s4<span class="op">.</span>push_str(<span class="st">&quot; Now it’s mutable!&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-12"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-12" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> s4)<span class="op">;</span>  <span class="co">// Prints: Mutable borrow! Now it’s mutable!</span></span>
+<span id="cb5-13"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-13" tabindex="-1"></a>    </span>
+<span id="cb5-14"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-14" tabindex="-1"></a>    <span class="co">// You can&#39;t have both mutable and immutable borrows at the same time:</span></span>
+<span id="cb5-15"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-15" tabindex="-1"></a>    <span class="co">// let s5 = &amp;s1;  // ERROR: cannot borrow `s1` as immutable because it&#39;s already borrowed as mutable</span></span>
+<span id="cb5-16"><a href="variables---strict-types-and-ownership-in-rust.html#cb5-16" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div id="explanation-1" class="section level4 hasAnchor" number="2.2.3.1">
+<h4><span class="header-section-number">2.2.3.1</span> Explanation:<a href="variables---strict-types-and-ownership-in-rust.html#explanation-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><strong>Immutable borrowing</strong> (<code>let s2 = &amp;s1</code>) allows multiple references to the same data but <strong>doesn’t allow modification</strong>.</li>
+<li><strong>Mutable borrowing</strong> (<code>let s4 = &amp;mut s3</code>) gives exclusive access to the data, and <strong>no other borrows</strong> (immutable or mutable) can exist while it’s borrowed mutably.</li>
+<li>The rules prevent <strong>data races</strong> by ensuring no one can have mutable access while others are reading (or mutably accessing the data).</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="combining-types-and-ownership" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Combining Types and Ownership<a href="variables---strict-types-and-ownership-in-rust.html#combining-types-and-ownership" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s combine both <strong>strict typing</strong> and <strong>ownership</strong> in a small example where we use both concepts together.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-1" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb6-2"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-2" tabindex="-1"></a>    <span class="kw">let</span> num<span class="op">:</span> <span class="dt">i32</span> <span class="op">=</span> <span class="dv">42</span><span class="op">;</span>  <span class="co">// i32 type (strict typing)</span></span>
+<span id="cb6-3"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-3" tabindex="-1"></a>    <span class="kw">let</span> num_copy <span class="op">=</span> num<span class="op">;</span>  <span class="co">// Ownership of num is copied to num_copy (as num is Copy type)</span></span>
+<span id="cb6-4"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-5" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">&quot;num: {}, num_copy: {}&quot;</span><span class="op">,</span> num<span class="op">,</span> num_copy)<span class="op">;</span>  <span class="co">// Both can still be used</span></span>
+<span id="cb6-6"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-7" tabindex="-1"></a>    <span class="kw">let</span> s1 <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">&quot;Rust Ownership!&quot;</span>)<span class="op">;</span>  <span class="co">// String type (non-Copy type)</span></span>
+<span id="cb6-8"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-8" tabindex="-1"></a>    <span class="kw">let</span> s2 <span class="op">=</span> s1<span class="op">;</span>  <span class="co">// Ownership of s1 is moved to s2</span></span>
+<span id="cb6-9"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-9" tabindex="-1"></a>    <span class="co">// println!(&quot;{}&quot;, s1);  // ERROR: s1 is no longer valid</span></span>
+<span id="cb6-10"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-10" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> s2)<span class="op">;</span>  <span class="co">// This works, since s2 now owns the String</span></span>
+<span id="cb6-11"><a href="variables---strict-types-and-ownership-in-rust.html#cb6-11" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div id="output" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Output:<a href="variables---strict-types-and-ownership-in-rust.html#output" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>num: 42, num_copy: 42
+Rust Ownership!</code></pre>
+<ul>
+<li><strong>Copy types</strong> (like <code>i32</code>) do not move ownership. They <strong>duplicate the data</strong> when assigned to another variable.</li>
+<li><strong>Non-copy types</strong> (like <code>String</code>) <strong>move ownership</strong> when assigned to another variable, which makes the first variable invalid.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="summary-of-ownership-and-strict-types" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Summary of Ownership and Strict Types:<a href="variables---strict-types-and-ownership-in-rust.html#summary-of-ownership-and-strict-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><strong>Rust’s strict typing</strong> ensures type safety at compile time, preventing mismatched types and logic errors that would only be caught at runtime in languages like R or Python.</li>
+<li><strong>Rust’s ownership model</strong> prevents issues like double freeing of memory and data races, making it one of the <strong>safest systems languages</strong> available. The rules around ownership, borrowing, and moving data are <strong>central to memory management</strong> in Rust, giving developers fine-grained control over memory safety without a garbage collector.</li>
+</ul>
+<p>Even so will not face these problems today it’s extremely important to know about this before you try to program in Rust.</p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-
+<a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="implementation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -301,7 +441,7 @@ gitbook.start({
     "size": 2
   },
   "edit": {
-    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-Variables.Rmd",
     "text": "Edit"
   },
   "history": {

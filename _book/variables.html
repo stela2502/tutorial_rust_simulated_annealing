@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Variables | Simulated Annealing in Rust</title>
+  <title>Chapter 2 Variables | Simulated Annealing in Rust</title>
   <meta name="description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
 This should be a one day excercise and requires a previouse programming experience, but not necessarily Rust experience.</p>" />
   <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Variables | Simulated Annealing in Rust" />
+  <meta property="og:title" content="Chapter 2 Variables | Simulated Annealing in Rust" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
@@ -17,7 +17,7 @@ This should be a one day excercise and requires a previouse programming experien
   <meta name="github-repo" content="stela2502/tutorial_rust_simulated_annealing" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Variables | Simulated Annealing in Rust" />
+  <meta name="twitter:title" content="Chapter 2 Variables | Simulated Annealing in Rust" />
   
   <meta name="twitter:description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
 This should be a one day excercise and requires a previouse programming experience, but not necessarily Rust experience.</p>" />
@@ -26,14 +26,14 @@ This should be a one day excercise and requires a previouse programming experien
 <meta name="author" content="Stefan Lang" />
 
 
-<meta name="date" content="2025-04-02" />
+<meta name="date" content="2025-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="introduction.html"/>
+<link rel="prev" href="using-rust-to-implement-the-simulatied-annealing-algorithm.html"/>
 <link rel="next" href="implementation.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -145,84 +145,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><i class="fa fa-check"></i><b>1</b> Using Rust to Implement the Simulatied Annealing Algorithm</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#the-problem"><i class="fa fa-check"></i><b>1.1</b> The Problem</a>
+<li class="chapter" data-level="1.1" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#rust-vs.-r-key-differences"><i class="fa fa-check"></i><b>1.1</b> Rust vs. R: Key Differences</a></li>
+<li class="chapter" data-level="1.2" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#a-quick-refresher-object-oriented-programming-oo"><i class="fa fa-check"></i><b>1.2</b> <strong>A Quick Refresher: Object-Oriented Programming (OO)</strong></a>
 <ul>
-<li class="chapter" data-level="1.1.1" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#the-data"><i class="fa fa-check"></i><b>1.1.1</b> The Data</a></li>
+<li class="chapter" data-level="1.2.1" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#r-example-object-oriented-approach-using-s3"><i class="fa fa-check"></i><b>1.2.1</b> <strong>R Example: Object-Oriented Approach Using S3</strong></a></li>
+<li class="chapter" data-level="1.2.2" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#rust-equivalent-using-structs-and-traits"><i class="fa fa-check"></i><b>1.2.2</b> <strong>Rust Equivalent: Using Structs and Traits</strong></a></li>
+<li class="chapter" data-level="1.2.3" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#key-takeaways"><i class="fa fa-check"></i><b>1.2.3</b> <strong>Key Takeaways</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#simulated-annealing"><i class="fa fa-check"></i><b>1.2</b> Simulated annealing</a></li>
-<li class="chapter" data-level="1.3" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#the-algorithm"><i class="fa fa-check"></i><b>1.3</b> The Algorithm</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
-<li class="chapter" data-level="3" data-path="variables.html"><a href="variables.html"><i class="fa fa-check"></i><b>3</b> Variables</a>
+<li class="chapter" data-level="1.3" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#the-problem-clustering-expression-data-using-simulated-annealing"><i class="fa fa-check"></i><b>1.3</b> <strong>The Problem: Clustering Expression Data Using Simulated Annealing</strong></a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="variables.html"><a href="variables.html#examples"><i class="fa fa-check"></i><b>3.1</b> Examples</a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="variables.html"><a href="variables.html#integers"><i class="fa fa-check"></i><b>3.1.1</b> Integers</a></li>
+<li class="chapter" data-level="1.3.1" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#the-data"><i class="fa fa-check"></i><b>1.3.1</b> <strong>The Data</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="variables.html"><a href="variables.html#create-a-new-rust-program"><i class="fa fa-check"></i><b>3.2</b> Create a new Rust program</a></li>
+<li class="chapter" data-level="1.4" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#simulated-annealing"><i class="fa fa-check"></i><b>1.4</b> Simulated annealing</a></li>
+<li class="chapter" data-level="1.5" data-path="using-rust-to-implement-the-simulatied-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html#the-algorithm"><i class="fa fa-check"></i><b>1.5</b> The Algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="implementation.html"><a href="implementation.html"><i class="fa fa-check"></i><b>4</b> Implementation</a>
+<li class="chapter" data-level="2" data-path="variables.html"><a href="variables.html"><i class="fa fa-check"></i><b>2</b> Variables</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="implementation.html"><a href="implementation.html#there-is-a-lot-of-new-stuff-in-this-function"><i class="fa fa-check"></i><b>4.1</b> There is a lot of new stuff in this function:</a></li>
-<li class="chapter" data-level="4.2" data-path="implementation.html"><a href="implementation.html#add-a-test-for-this"><i class="fa fa-check"></i><b>4.2</b> Add a test for this</a></li>
+<li class="chapter" data-level="2.1" data-path="variables.html"><a href="variables.html#examples"><i class="fa fa-check"></i><b>2.1</b> Examples</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="variables.html"><a href="variables.html#integers"><i class="fa fa-check"></i><b>2.1.1</b> Integers</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="implement-the-simaulated-annealing-algorithm.html"><a href="implement-the-simaulated-annealing-algorithm.html"><i class="fa fa-check"></i><b>5</b> Implement the Simaulated Annealing Algorithm</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="implement-the-simaulated-annealing-algorithm.html"><a href="implement-the-simaulated-annealing-algorithm.html#scaling-of-the-data"><i class="fa fa-check"></i><b>5.1</b> scaling of the data</a></li>
-<li class="chapter" data-level="5.2" data-path="implement-the-simaulated-annealing-algorithm.html"><a href="implement-the-simaulated-annealing-algorithm.html#calculating-cluster-energy"><i class="fa fa-check"></i><b>5.2</b> Calculating Cluster Energy</a></li>
-<li class="chapter" data-level="5.3" data-path="implement-the-simaulated-annealing-algorithm.html"><a href="implement-the-simaulated-annealing-algorithm.html#the-main-function"><i class="fa fa-check"></i><b>5.3</b> The main function</a></li>
-<li class="chapter" data-level="5.4" data-path="implement-the-simaulated-annealing-algorithm.html"><a href="implement-the-simaulated-annealing-algorithm.html#and-funtions-to-plot-and-write-the-data"><i class="fa fa-check"></i><b>5.4</b> And Funtions to Plot and Write the Data</a></li>
+<li class="chapter" data-level="2.2" data-path="variables.html"><a href="variables.html#create-a-new-rust-program"><i class="fa fa-check"></i><b>2.2</b> Create a new Rust program</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="main.html"><a href="main.html"><i class="fa fa-check"></i><b>6</b> main.rs</a></li>
-<li class="chapter" data-level="7" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>7</b> Sharing your book</a>
+<li class="chapter" data-level="3" data-path="implementation.html"><a href="implementation.html"><i class="fa fa-check"></i><b>3</b> Implementation</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>7.1</b> Publishing</a></li>
-<li class="chapter" data-level="7.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>7.2</b> 404 pages</a></li>
-<li class="chapter" data-level="7.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>7.3</b> Metadata for sharing</a></li>
+<li class="chapter" data-level="3.1" data-path="implementation.html"><a href="implementation.html#there-is-a-lot-of-new-stuff-in-this-function"><i class="fa fa-check"></i><b>3.1</b> There is a lot of new stuff in this function:</a></li>
+<li class="chapter" data-level="3.2" data-path="implementation.html"><a href="implementation.html#add-a-test-for-this"><i class="fa fa-check"></i><b>3.2</b> Add a test for this</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="chapter" data-level="8" data-path="error-handling.html"><a href="error-handling.html"><i class="fa fa-check"></i><b>8</b> Error Handling in Rust</a>
+<li class="chapter" data-level="4" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html"><i class="fa fa-check"></i><b>4</b> Implement the Simulated Annealing Algorithm</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="error-handling.html"><a href="error-handling.html#unrecoverable-errors-panic"><i class="fa fa-check"></i><b>8.1</b> 1. Unrecoverable Errors (<code>panic!</code>)</a>
-<ul>
-<li class="chapter" data-level="8.1.1" data-path="error-handling.html"><a href="error-handling.html#example"><i class="fa fa-check"></i><b>8.1.1</b> Example:</a></li>
-<li class="chapter" data-level="8.1.2" data-path="error-handling.html"><a href="error-handling.html#when-to-use-panic"><i class="fa fa-check"></i><b>8.1.2</b> When to Use <code>panic!()</code></a></li>
-<li class="chapter" data-level="8.1.3" data-path="error-handling.html"><a href="error-handling.html#handling-panics-gracefully"><i class="fa fa-check"></i><b>8.1.3</b> Handling Panics Gracefully</a></li>
+<li class="chapter" data-level="4.1" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#scaling-of-the-data"><i class="fa fa-check"></i><b>4.1</b> scaling of the data</a></li>
+<li class="chapter" data-level="4.2" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#calculating-cluster-energy"><i class="fa fa-check"></i><b>4.2</b> Calculating Cluster Energy</a></li>
+<li class="chapter" data-level="4.3" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#the-main-function"><i class="fa fa-check"></i><b>4.3</b> The main function</a></li>
+<li class="chapter" data-level="4.4" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#and-funtions-to-plot-and-write-the-data"><i class="fa fa-check"></i><b>4.4</b> And Funtions to Plot and Write the Data</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="error-handling.html"><a href="error-handling.html#recoverable-errors-resultt-e"><i class="fa fa-check"></i><b>8.2</b> 2. Recoverable Errors (<code>Result&lt;T, E&gt;</code>)</a>
+<li class="chapter" data-level="5" data-path="the-program-logiocs-is-implemented-in-main.html"><a href="the-program-logiocs-is-implemented-in-main.html"><i class="fa fa-check"></i><b>5</b> The Program Logiocs is Implemented in main.rs</a>
 <ul>
-<li class="chapter" data-level="8.2.1" data-path="error-handling.html"><a href="error-handling.html#example-1"><i class="fa fa-check"></i><b>8.2.1</b> Example:</a></li>
-<li class="chapter" data-level="8.2.2" data-path="error-handling.html"><a href="error-handling.html#resultt-e-explanation"><i class="fa fa-check"></i><b>8.2.2</b> <code>Result&lt;T, E&gt;</code> Explanation</a></li>
-<li class="chapter" data-level="8.2.3" data-path="error-handling.html"><a href="error-handling.html#common-ways-to-handle-resultt-e"><i class="fa fa-check"></i><b>8.2.3</b> Common Ways to Handle <code>Result&lt;T, E&gt;</code></a></li>
+<li class="chapter" data-level="5.1" data-path="the-program-logiocs-is-implemented-in-main.html"><a href="the-program-logiocs-is-implemented-in-main.html#we-have-an-executable"><i class="fa fa-check"></i><b>5.1</b> We Have an Executable!!</a></li>
+<li class="chapter" data-level="5.2" data-path="the-program-logiocs-is-implemented-in-main.html"><a href="the-program-logiocs-is-implemented-in-main.html#implement-a-print-for-our-class"><i class="fa fa-check"></i><b>5.2</b> Implement a ‘print’ for our Class</a></li>
+<li class="chapter" data-level="5.3" data-path="the-program-logiocs-is-implemented-in-main.html"><a href="the-program-logiocs-is-implemented-in-main.html#take-home-message"><i class="fa fa-check"></i><b>5.3</b> Take Home Message</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="error-handling.html"><a href="error-handling.html#custom-errors-with-thiserror-and-anyhow"><i class="fa fa-check"></i><b>8.3</b> 3. Custom Errors with <code>thiserror</code> and <code>anyhow</code></a>
+<li class="chapter" data-level="6" data-path="error-handling.html"><a href="error-handling.html"><i class="fa fa-check"></i><b>6</b> Error Handling in Rust</a>
 <ul>
-<li class="chapter" data-level="8.3.1" data-path="error-handling.html"><a href="error-handling.html#using-thiserror-for-custom-errors"><i class="fa fa-check"></i><b>8.3.1</b> Using <code>thiserror</code> for Custom Errors</a></li>
-<li class="chapter" data-level="8.3.2" data-path="error-handling.html"><a href="error-handling.html#using-anyhow-for-simpler-error-handling"><i class="fa fa-check"></i><b>8.3.2</b> Using <code>anyhow</code> for Simpler Error Handling</a></li>
-</ul></li>
-<li class="chapter" data-level="8.4" data-path="error-handling.html"><a href="error-handling.html#summary-of-rust-error-handling-techniques"><i class="fa fa-check"></i><b>8.4</b> Summary of Rust Error Handling Techniques</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>9</b> Testing in Rust</a>
+<li class="chapter" data-level="6.1" data-path="error-handling.html"><a href="error-handling.html#unrecoverable-errors-panic"><i class="fa fa-check"></i><b>6.1</b> 1. Unrecoverable Errors (<code>panic!</code>)</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="testing.html"><a href="testing.html#writing-basic-unit-tests"><i class="fa fa-check"></i><b>9.1</b> 1. Writing Basic Unit Tests</a>
-<ul>
-<li class="chapter" data-level="9.1.1" data-path="testing.html"><a href="testing.html#example-2"><i class="fa fa-check"></i><b>9.1.1</b> Example:</a></li>
-<li class="chapter" data-level="9.1.2" data-path="testing.html"><a href="testing.html#common-assertions"><i class="fa fa-check"></i><b>9.1.2</b> Common Assertions:</a></li>
+<li class="chapter" data-level="6.1.1" data-path="error-handling.html"><a href="error-handling.html#example"><i class="fa fa-check"></i><b>6.1.1</b> Example:</a></li>
+<li class="chapter" data-level="6.1.2" data-path="error-handling.html"><a href="error-handling.html#when-to-use-panic"><i class="fa fa-check"></i><b>6.1.2</b> When to Use <code>panic!()</code></a></li>
+<li class="chapter" data-level="6.1.3" data-path="error-handling.html"><a href="error-handling.html#handling-panics-gracefully"><i class="fa fa-check"></i><b>6.1.3</b> Handling Panics Gracefully</a></li>
 </ul></li>
-<li class="chapter" data-level="9.2" data-path="testing.html"><a href="testing.html#running-tests"><i class="fa fa-check"></i><b>9.2</b> 2. Running Tests</a></li>
-<li class="chapter" data-level="9.3" data-path="testing.html"><a href="testing.html#testing-for-panics"><i class="fa fa-check"></i><b>9.3</b> 3. Testing for Panics</a></li>
-<li class="chapter" data-level="9.4" data-path="testing.html"><a href="testing.html#using-resultt-e-in-tests"><i class="fa fa-check"></i><b>9.4</b> 4. Using <code>Result&lt;T, E&gt;</code> in Tests</a></li>
-<li class="chapter" data-level="9.5" data-path="testing.html"><a href="testing.html#ignoring-tests"><i class="fa fa-check"></i><b>9.5</b> 5. Ignoring Tests</a></li>
-<li class="chapter" data-level="9.6" data-path="testing.html"><a href="testing.html#benchmarking-with-bench"><i class="fa fa-check"></i><b>9.6</b> 6. Benchmarking with <code>#[bench]</code></a></li>
-<li class="chapter" data-level="9.7" data-path="testing.html"><a href="testing.html#integration-tests"><i class="fa fa-check"></i><b>9.7</b> 7. Integration Tests</a>
+<li class="chapter" data-level="6.2" data-path="error-handling.html"><a href="error-handling.html#recoverable-errors-resultt-e"><i class="fa fa-check"></i><b>6.2</b> 2. Recoverable Errors (<code>Result&lt;T, E&gt;</code>)</a>
 <ul>
-<li class="chapter" data-level="9.7.1" data-path="testing.html"><a href="testing.html#example-testsintegration_test.rs"><i class="fa fa-check"></i><b>9.7.1</b> Example <code>tests/integration_test.rs</code>:</a></li>
+<li class="chapter" data-level="6.2.1" data-path="error-handling.html"><a href="error-handling.html#example-1"><i class="fa fa-check"></i><b>6.2.1</b> Example:</a></li>
+<li class="chapter" data-level="6.2.2" data-path="error-handling.html"><a href="error-handling.html#resultt-e-explanation"><i class="fa fa-check"></i><b>6.2.2</b> <code>Result&lt;T, E&gt;</code> Explanation</a></li>
+<li class="chapter" data-level="6.2.3" data-path="error-handling.html"><a href="error-handling.html#common-ways-to-handle-resultt-e"><i class="fa fa-check"></i><b>6.2.3</b> Common Ways to Handle <code>Result&lt;T, E&gt;</code></a></li>
 </ul></li>
-<li class="chapter" data-level="9.8" data-path="testing.html"><a href="testing.html#testing-the-executable"><i class="fa fa-check"></i><b>9.8</b> 8. Testing the Executable</a>
+<li class="chapter" data-level="6.3" data-path="error-handling.html"><a href="error-handling.html#custom-errors-with-thiserror-and-anyhow"><i class="fa fa-check"></i><b>6.3</b> 3. Custom Errors with <code>thiserror</code> and <code>anyhow</code></a>
 <ul>
-<li class="chapter" data-level="9.8.1" data-path="testing.html"><a href="testing.html#example-teststest_binary.rs"><i class="fa fa-check"></i><b>9.8.1</b> Example <code>tests/test_binary.rs</code>:</a></li>
+<li class="chapter" data-level="6.3.1" data-path="error-handling.html"><a href="error-handling.html#using-thiserror-for-custom-errors"><i class="fa fa-check"></i><b>6.3.1</b> Using <code>thiserror</code> for Custom Errors</a></li>
+<li class="chapter" data-level="6.3.2" data-path="error-handling.html"><a href="error-handling.html#using-anyhow-for-simpler-error-handling"><i class="fa fa-check"></i><b>6.3.2</b> Using <code>anyhow</code> for Simpler Error Handling</a></li>
 </ul></li>
-<li class="chapter" data-level="9.9" data-path="testing.html"><a href="testing.html#summary"><i class="fa fa-check"></i><b>9.9</b> Summary</a></li>
+<li class="chapter" data-level="6.4" data-path="error-handling.html"><a href="error-handling.html#summary-of-rust-error-handling-techniques"><i class="fa fa-check"></i><b>6.4</b> Summary of Rust Error Handling Techniques</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>7</b> Testing in Rust</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="testing.html"><a href="testing.html#writing-basic-unit-tests"><i class="fa fa-check"></i><b>7.1</b> 1. Writing Basic Unit Tests</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="testing.html"><a href="testing.html#example-2"><i class="fa fa-check"></i><b>7.1.1</b> Example:</a></li>
+<li class="chapter" data-level="7.1.2" data-path="testing.html"><a href="testing.html#common-assertions"><i class="fa fa-check"></i><b>7.1.2</b> Common Assertions:</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="testing.html"><a href="testing.html#running-tests"><i class="fa fa-check"></i><b>7.2</b> 2. Running Tests</a></li>
+<li class="chapter" data-level="7.3" data-path="testing.html"><a href="testing.html#testing-for-panics"><i class="fa fa-check"></i><b>7.3</b> 3. Testing for Panics</a></li>
+<li class="chapter" data-level="7.4" data-path="testing.html"><a href="testing.html#using-resultt-e-in-tests"><i class="fa fa-check"></i><b>7.4</b> 4. Using <code>Result&lt;T, E&gt;</code> in Tests</a></li>
+<li class="chapter" data-level="7.5" data-path="testing.html"><a href="testing.html#ignoring-tests"><i class="fa fa-check"></i><b>7.5</b> 5. Ignoring Tests</a></li>
+<li class="chapter" data-level="7.6" data-path="testing.html"><a href="testing.html#benchmarking-with-bench"><i class="fa fa-check"></i><b>7.6</b> 6. Benchmarking with <code>#[bench]</code></a></li>
+<li class="chapter" data-level="7.7" data-path="testing.html"><a href="testing.html#integration-tests"><i class="fa fa-check"></i><b>7.7</b> 7. Integration Tests</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="testing.html"><a href="testing.html#example-testsintegration_test.rs"><i class="fa fa-check"></i><b>7.7.1</b> Example <code>tests/integration_test.rs</code>:</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="testing.html"><a href="testing.html#testing-the-executable"><i class="fa fa-check"></i><b>7.8</b> 8. Testing the Executable</a>
+<ul>
+<li class="chapter" data-level="7.8.1" data-path="testing.html"><a href="testing.html#example-teststest_binary.rs"><i class="fa fa-check"></i><b>7.8.1</b> Example <code>tests/test_binary.rs</code>:</a></li>
+</ul></li>
+<li class="chapter" data-level="7.9" data-path="testing.html"><a href="testing.html#summary"><i class="fa fa-check"></i><b>7.9</b> Summary</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -244,22 +248,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="variables" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">Chapter 3</span> Variables<a href="variables.html#variables" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="variables" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Variables<a href="variables.html#variables" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Rust uses strong typed variables. This does mean that you need to define your variables as a specific type.
-As an example you can store integer values as u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, usize or integer.
-All of these types can not be compared against each other. So if you want to create some data structures it does help to choose the same type for all data (eg. u64).
-The difference between the integer types are the range of values they can contain: u8 and i8 are 8 bit long whereas u128 and i128 are 128 bit long; the u types are unsigned and can not contain negative values.
+As an example you can store integer values as u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, usize or integer.</p>
+<p>All of these types can not be compared against each other. So if you want to create some data structures it does help to choose the same type for all data (eg. u64).</p>
+<p>The difference between the integer types are the range of values they can contain: u8 and i8 are 8 bit long whereas u128 and i128 are 128 bit long; the u types are unsigned and can not contain negative values.
 Usize is the default integer type and is dependent on your computer type. On 64 bit computers it is the same as a u64 - but you still can not compare it directly to u64.</p>
-<div id="examples" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Examples<a href="variables.html#examples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="examples" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Examples<a href="variables.html#examples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here I will show you the minimal Rust programming:</p>
 <ul>
 <li>define a variable</li>
 <li>do a small calculation</li>
 </ul>
-<div id="integers" class="section level3 hasAnchor" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> Integers<a href="variables.html#integers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="integers" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Integers<a href="variables.html#integers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Using RStudio at the moment I can show you how you define a variable in Rust:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb1-1"><a href="variables.html#cb1-1" tabindex="-1"></a>  <span class="kw">let</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
 <span id="cb1-2"><a href="variables.html#cb1-2" tabindex="-1"></a>  <span class="kw">let</span> y <span class="op">=</span> <span class="dv">7</span><span class="op">;</span></span>
@@ -283,8 +287,8 @@ If you want to specify the integer type you want to use here you could write the
 <p>OK - this works in RStudio - what about breaking this code?</p>
 </div>
 </div>
-<div id="create-a-new-rust-program" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Create a new Rust program<a href="variables.html#create-a-new-rust-program" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="create-a-new-rust-program" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Create a new Rust program<a href="variables.html#create-a-new-rust-program" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Rust is a compiled language and therefore interacting with it using a jupyter notebook or Rmd file does limit the language a lot.
 Hence it makes more sense to compile Rust programs and use them on the command line.</p>
 <p>As an example of why - I deliberately broke the integer example:</p>
@@ -408,6 +412,8 @@ Hence it makes more sense to compile Rust programs and use them on the command l
 ## 
 ## Rust only looks at the signature of the called function, as such it must
 ## already specify all requirements that will be used for every type parameter.</code></pre>
+<p>Isn’t that beatuful? How informative this output is?
+If the Rust compiler can not help you you can always try an AI assistant to help you. I had good experiences if my idea could be implementd in Rust and a lot of wasted time with Rust incompatible ideas.</p>
 
 </div>
 </div>
@@ -416,7 +422,7 @@ Hence it makes more sense to compile Rust programs and use them on the command l
           </div>
         </div>
       </div>
-<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="using-rust-to-implement-the-simulatied-annealing-algorithm.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="implementation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
