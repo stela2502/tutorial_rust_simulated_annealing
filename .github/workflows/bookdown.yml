@@ -20,22 +20,21 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc git
-          sudo apt-get install -y r-base  # Install R
+          sudo apt-get install -y r-base r-cran-bookdown r-cran-rmarkdown # Install R
           sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev  # Dependencies for R packages
-
-          # Install necessary R packages
-          Rscript -e "install.packages('bookdown')"
-          Rscript -e "install.packages('rmarkdown')"
 
       - name: Render book
         run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::gitbook")'
 
       - name: Copy Main Page as index.html
-        run: cp _book/using-rust-to-implement-the-simulatied-annealing-algorithm.html _book/index.html
+        run: |
+          cp _book/using-rust-to-implement-the-simulatied-annealing-algorithm.html index.html
+          mkdir docs
+          cp _book/*.html doc/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: ./_book
+          publish_dir: ./docs
 
