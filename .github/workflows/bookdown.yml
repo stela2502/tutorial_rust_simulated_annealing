@@ -19,8 +19,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc git
-          sudo apt-get install -y r-cran-bookdown r-cran-rmarkdown # Install R
+          sudo apt-get install -y pandoc git rust-1.80-all
+          sudo apt-get install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev  # Dependencies for R packages
+          Rscript -e "install.packages(c('bookdown', 'rmarkdown', 'rextendr'))"
 
       - name: Render book
         run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::gitbook")'
