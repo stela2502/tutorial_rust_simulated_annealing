@@ -145,21 +145,30 @@ fn main() {
 The main function is very simple - halve of it is actually calculating the time the program takes to finish.
 Try it?
 
-```{bash}
+```{bash eval=FALSE}
+cargo test -r
+```
+
+```{bash echo=FALSE}
 make step4 |  sed 's/\x1B\[[0-9;]*m//g'
 ```
 
-## We Have an Executable!!
+## We have an Executable!!
 
 You now can run the executable target/release/simulated_annealing like that:
 
-```{bash}
+```{bash eval=FALSE}
+target/release/simulated_annealing  -f tests/data/Spellman_Yeast_Cell_Cycle.tsv --clusters 8 --temp 20 --outfile /tmp/clusters.tsv
+```
+
+```{bash echo=FALSE}
 #I need to go to another directory - you stay where you are:
 cd rust_stages/step4
 
 #and run the script:
 target/release/simulated_annealing  -f tests/data/Spellman_Yeast_Cell_Cycle.tsv --clusters 8 --temp 20 --outfile /tmp/clusters.tsv
 ```
+
 
 ## Implement a 'print' for our Class
 
@@ -237,16 +246,14 @@ fn main() {
 I have not modified my examples here - so this is something you can do all for yourself.
 If we have more time we could implement one more improvement to the library:
 
-Add a store variable into the class and calculate the row to row distances after you have scaled the data.
+Add a store variable into the class and populate it with the row to row distances after you have scaled the data.
 Then modify the calc_ek() function to use the values from the store and not calculate the distances every single time.
-This should give you an additional x5 speed improvement if you store it as a Vec<Vec<f32>> again. If you use a single vector and an index function you cold get an even better performance.
+This should give you an additional x5 speed improvement if you store it as a Vec<Vec<f32>> again. If you use a single vector and an index function you could get an even better performance.
 
 ## Take Home Message
 
-The implementation of the functions is significantly different from R or Python, but with the compiler and the AI assistance we can get at the moment it is doable. It takes time to get into, but the speed improvements can be enormous.
+The implementation of the functions is significantly different from R or Python, but with the compiler and the AI assistance we can get at the moment it, is doable. Coding in Rust takes time to get into, but the speed improvements can be worth it.
 
-This example here does not really highlight the usability as the R code also finished in a resonable amount of time, but if you have more complicated tasks - like processing bam files or anything else that is either easy to implement in a multiprocessor system or needs to process binary data it is worth to look into Rust. It is somewhat slower than C and C++ (like 3 to 5 times?), but Rust is so much easier to program in if you come from R and Python - it is worth it.
+This example here does not really highlight the usability as the R code also finished in a reasonable amount of time, but if you have more complicated tasks - like processing BAM files or anything else that is (1) either easy to implement in a multiprocessor system or (2) needs to process binary data, it is worth to look into Rust. It is somewhat slower than C and C++ (like 3 to 5 times?), but Rust is so much easier to program in if you come from R and Python - it is worth it.
 
 By the way - I used a ArrayBase<ndarray::OwnedRepr<f64>, Dim<[usize; 2]>> for my store and gained another speed boost of factor 2. Given the fact that this takes either 60 or 30 milliseconds this is no big deal. For the sake of this tutorial I think a Vec<Vec<_>> is easier to work with. You can check out my other implementation [here](https://github.com/stela2502/simulated_annealing).
-
-

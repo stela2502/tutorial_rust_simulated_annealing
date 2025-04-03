@@ -3,95 +3,167 @@
 The idea behind this workshop is not to teach you how to implement the simulated annealing algorithm, but to show you how you can start to use Rust.
 Therefore we will use Shamit's R implementation and convert that to Rust.
 
-## scaling of the data
+## scaling of the data or "why `scale.01` in R is Fundamentally Flawed"
 
-This is the scale.01 function in R:
+### The R Implementation
+
+The scale.01 function in R is defined as follows:
+
 ```
 scale.01 <- function(v){
-  sc.01 <- (v-min(v))/(max(v)-min(v))
+  sc.01 <- (v - min(v)) / (max(v) - min(v))
   sc.01
 }
 ```
 
-In Rust I would like not exactly this functionality, but a function that converts our data object in place:
+At first glance, this function seems to be a simple and effective way to scale a vector of numerical values between 0 and 1. And to state that clearly - it is perfectly valid R code. However, there are several fundamental issues with this implementation.
+
+### The Problems with scale.01
+
+1. **Inefficiency:** The function computes min(v) and max(v) twice. This is unnecessary and can significantly slow down performance when applied to large vectors.
+
+2. **Vectorized but Inefficient in Apply Calls:** The function is designed to be used in an apply() statement, which is idiomatic in R. However, repeatedly calling this function on subsets of data results in redundant computations.
+
+3. **Mutation vs. Copying:** In R, this function creates a new vector instead of modifying the existing one in place. This is inefficient for large datasets and contrasts with best practices in languages like Rust.
+
+## The Rust Approach
+
+In Rust, the equivalent function would modify the existing data structure in place for efficiency. Here’s an example:
 
 ```
-    pub fn scale_01( &mut self){
-            for row in &mut self.data {
-                let mut min = f32::INFINITY;
-                let mut max = f32::NEG_INFINITY;
-                for i in 0..row.len(){
-                    min = min.min(row[i]);
-                    max = max.max(row[i]);
-                    
-                }
-                // Now apply the scaling using the min/max in place
-                for entry in row {
-                    *entry = (*entry - min) / (max - min);  // In-place scaling
-                }
-            }
+pub fn scale_01(&mut self) {
+    for row in &mut self.data {
+        let mut min = f32::INFINITY;
+        let mut max = f32::NEG_INFINITY;
+        
+        for &value in row.iter() {
+            min = min.min(value);
+            max = max.max(value);
+        }
+        
+        for value in row.iter_mut() {
+            *value = (*value - min) / (max - min);
+        }
     }
+}
 ```
+
+### Why the Rust Approach is Better
+
+  1. **In-Place Modification:** The Rust function modifies the existing data structure instead of creating unnecessary copies.
+
+  2. **Optimized Min/Max Computation:** The min and max values are computed only once per row, avoiding redundant calculations.
+
+  3. **Memory Efficiency:** By avoiding extra allocations, the Rust implementation is more memory-efficient, making it suitable for large datasets.
+ 
+  4. **Safety & Performance:** Rust enforces strict memory safety and avoids unintended data duplication, unlike R, where copies can be created implicitly.
+
+### Summary
+- R makes vectorized operations look simple but hides inefficiencies.
+- Rust requires explicit memory management but ensures better performance and correctness.
+
 
 ## Calculating Cluster Energy
 
-The R function uses a lot of R specific niceties like 'which' and 'dist' which we unfortunately need to implement in Rust.
-
+The R function `calc.Ek` calculates the energy of a specific cluster in a dataset. Here's the R code:
 
 ```
-# This function calculates the energy of a single cluster only (coi- cluster of interest)
-calc.Ek <- function(m,clus,coi){
-
-  clus.d <- m[which(clus==coi),]
+calc.Ek <- function(m, clus, coi){
+  clus.d <- m[which(clus == coi), ]
   Ek <- sum(dist(clus.d))
   Ek
 }
 ```
-But that is not complicated:
+
+### Explanation of the R Code
+1. **Selecting Rows for the Cluster**:  
+   The first step in the R function is to create a new matrix, `clus.d`, that contains only the rows of the matrix `m` where the cluster label in the `clus` vector is equal to the cluster of interest `coi`. This is done using the `which()` function to find the indices of the rows that belong to the target cluster.
+   
+2. **Calculating the Energy**:  
+   The function then calculates the energy (`Ek`) of the cluster by summing the pairwise Euclidean distances between all the rows in `clus.d`. The `dist()` function in R calculates the Euclidean distance between each pair of rows, and `sum()` is used to add these distances together.
+
+3. **Output**:  
+   The energy of the cluster (`Ek`) is returned as the result.
+
+### How It Works in R
+- R makes use of high-level functions like `which()` and `dist()`, which simplify the implementation but may introduce some overhead due to the creation of intermediate data structures.
+
+---
+
+## The Rust Implementation
+
+The equivalent function in Rust is implemented with more explicit control over memory and data. Here's the Rust code:
 
 ```
-    /// Function to compute the Euclidean distance between rows of data
-    fn euclidean_distance(&self, i: usize, j: usize ) -> f32 {
-        let v1 = &self.data[i];
-        let v2 = &self.data[j];
-        let mut sum:f32 = 0.0;
-        for i in 0..v1.len(){
-            sum += (v1[i] - v2[i]).powi(2);
-        }
-        sum.sqrt()
+/// Function to compute the Euclidean distance between rows of data
+fn euclidean_distance(&self, i: usize, j: usize) -> f32 {
+    let v1 = &self.data[i];
+    let v2 = &self.data[j];
+    let mut sum: f32 = 0.0;
+    for i in 0..v1.len() {
+        sum += (v1[i] - v2[i]).powi(2);
     }
-    
-    /// Calculates the cluster energy
-    fn calc_ek(&self, clus: usize) -> f32 {
-        let ids = self.cluster_rows( clus );
-        //println!("I found these cluster gene ids: {:?}",ids);
-        let mut sum = 0.0;
-        for i in 0..ids.len() {
-            for j in i+1..ids.len() {
-                //println!("adding {} ([{}][{}]) to the sum",self.store[ ids[i] ][ ids[j] ], ids[i], ids[j] );
-                sum += self.euclidean_distance( ids[i], ids[j] );
-            }
+    sum.sqrt()
+}
+
+/// Calculates the cluster energy
+fn calc_ek(&self, clus: usize) -> f32 {
+    let ids = self.cluster_rows(clus);
+    let mut sum = 0.0;
+    for i in 0..ids.len() {
+        for j in i+1..ids.len() {
+            sum += self.euclidean_distance(ids[i], ids[j]);
         }
-        //println!("I found ek {sum}");
-        sum
     }
-    
-    /// which rows are in cluster x?
-    fn cluster_rows( &self, clus: usize ) -> Vec<usize>{
-        let mut ret = Vec::<usize>::with_capacity( self.clusters.len() );
-        for i in 0..self.clusters.len(){
-             if self.clusters[i] == clus{
-                ret.push(i);
-             }
+    sum
+}
+
+/// Which rows are in cluster `clus`?
+fn cluster_rows(&self, clus: usize) -> Vec<usize> {
+    let mut ret = Vec::<usize>::with_capacity(self.clusters.len());
+    for i in 0..self.clusters.len() {
+        if self.clusters[i] == clus {
+            ret.push(i);
         }
-        ret
     }
-  
+    ret
+}
 ```
+
+### Explanation of the Rust Code
+1. **Euclidean Distance Calculation**:  
+   In Rust, the `euclidean_distance` function calculates the Euclidean distance between two rows. It takes the indices of the rows (`i` and `j`) and computes the sum of squared differences between corresponding elements in the rows. Finally, it returns the square root of the sum to get the distance.
+
+2. **Cluster Energy Calculation**:  
+   The `calc_ek` function calculates the energy of a cluster by:
+   - Finding the indices of the rows that belong to the specified cluster using the `cluster_rows` function.
+   - For each pair of rows in the cluster, it computes the Euclidean distance and adds it to the total sum, which represents the cluster energy.
+
+3. **Cluster Rows**:  
+   The `cluster_rows` function simply iterates over the `clusters` vector and collects the indices of the rows that belong to the specified cluster (`clus`). It returns a `Vec<usize>` containing these indices.
+
+### How It Works in Rust
+- Rust gives you more control over memory and data access. The program works with mutable references and does not create intermediate data structures unless necessary.
+- The `cluster_rows` function is used to filter the rows based on the cluster, while the `euclidean_distance` function calculates the pairwise distance.
+
+This said there are libraries that allow the Rust code to look more like the R code, but I want to use as little libraries asa possible here.
+---
+
+## Summary
+
+This comparison shows how the same calculation is done in both R and Rust. While the logic is similar, Rust provides more explicit control over memory and data access, which can lead to greater performance for large datasets. However, the R version is simpler and easier to understand for those already familiar with R's high-level functions.
+
 
 ## The main function
 
-This main function in R now runs the simulated annealing algorithm in R:
+The R code provided implements the simulated annealing algorithm in the following steps:
+
+1. **Initial Cluster Assignment**: A random assignment of K clusters to the rows of data is performed using `sample(1:K, nrow(data), replace = TRUE)`.
+2. **Energy Calculation**: The function `calc.Ek()` calculates the energy of the cluster (the sum of distances between elements within the cluster).
+3. **Annealing Process**: In each iteration, a row (data point) is randomly chosen and moved to a new cluster. The energy of the system is recalculated based on the new cluster assignment.
+4. **Acceptance Criteria**: If the new configuration has a lower energy, it is accepted. If the energy is higher, the new configuration is accepted based on a probabilistic criterion derived from the temperature (simulating the annealing process).
+5. **Cooling**: The temperature is updated in each iteration by multiplying it with a cooling factor.
+
 
 ```
 #This is the main algorithm that performs the annealing. It takes the data,how
@@ -147,9 +219,16 @@ sa.ok <- function(data,K,Iter,Temp,cool){
 }
 ```
 
-That is quite a lot and we should probably look into what this does.
+### Rust Implementation
 
-Since the initial random cluster assignment is already done in new(), we now need to compute the energy of each cluster before proceeding with simulated annealing.
+The Rust version of the algorithm closely follows the same logic as the R implementation but is adapted for performance and memory safety in the Rust programming language:
+
+1. **Random Cluster Assignment**: In Rust, clusters are assigned using `rand::random_range()` instead of the R `sample()` function.
+2. **Energy Calculation**: The energy calculation (`calc_ek()`) is similar to R’s `calc.Ek()`, but it uses a more efficient loop-based calculation of Euclidean distances.
+3. **Annealing Process**: The process for updating the cluster assignment and calculating energies is similar to the R version but is implemented with Rust’s ownership model and safety guarantees.
+4. **Acceptance Criteria**: The acceptance criterion is implemented with the same logic, but uses Rust’s `f32::exp()` to handle the energy calculations and probabilistic decision-making.
+5. **Cooling**: The temperature is updated similarly to R, using a multiplicative cooling factor.
+
 
 ```
     pub fn run( &mut self, max_iter:usize, cool:f32 ) -> usize {
@@ -193,21 +272,23 @@ Since the initial random cluster assignment is already done in new(), we now nee
               //this move was not good - drop it!
               self.clusters[moving_row] = move_from;
           }
-          // cool the system and exit if it reached ~0
+          // cool the system
           self.temp *= cool;
-          if self.temp < 1e-8{
-              break
-          }
       }
       it
     }
     
 ```
 
+There is not a lot of differences in the implementation - the rust code is even one line shorter as the R one.
+
 
 ## And Funtions to Plot and Write the Data
 
-Here I'll just give you the Rust code as this is something I also just copy pasted:
+I assume that by now you understand what the write_clusters function is doing.
+
+Plotting is a lot different from R; I have just obtained that function structure from ChatGPT and fixed some errors.
+Just take it as is.
 
 ```
 use plotters::prelude::*;
@@ -309,8 +390,11 @@ Add a second test case into the lib.rs file:
     }
 ```
 
+```{bash eval=FALSE}
+make test -r
+```
 
-```{bash}
+```{bash echo=FALSE}
 make step3|  sed 's/\x1B\[[0-9;]*m//g'
 ```
 

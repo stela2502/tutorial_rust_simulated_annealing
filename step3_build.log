@@ -1,9 +1,10 @@
-    Finished `release` profile [optimized] target(s) in 0.04s
+   Compiling simulated_annealing v0.1.0 (/home/med-sal/git_Projects/tutorial_rust_simulated_annealing/rust_stages/step3)
+    Finished `release` profile [optimized] target(s) in 0.83s
      Running unittests src/lib.rs (target/release/deps/simulated_annealing-ec0f849373011f09)
 
 running 2 tests
-test tests::test_read_data ... ok
 test tests::tes_scale01 ... ok
+test tests::test_read_data ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 

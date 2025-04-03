@@ -1,25 +1,19 @@
 
 # Create a Rust Project and Implement the Class
 
-A Rust class is a combination of a struct- (data) and an impl-block (functions). But as in R a package contains more important files and a folder structure.
+A Rust **class** is a combination of a struct- (data) and an impl-block (functions). But as in R a Rust **package** contains several other important files and a specific folder structure.
 
 As an R programmer, you're likely familiar with using tools like devtools to streamline the creation of R packages. In Rust, the process of setting up a new package is just as straightforward, though the terminology and structure differ slightly. 
 
-The easiest way to start this is to use the Rust way of ''
-Now let's look into creating a Rust package that executes a Simulated Annealing based Clustering on a text table of numeric values.
-
-First we will create a new package structure for your tool:
-
+This will create the folder, populate it with some files and prepare it for git usage.
 ```
 cargo new --bin simulated_annealing
 ```
-
-This will create the folder, populate it with some files and prepare it for git usage.
 For later use we create a **simulated_annealing/tests** folder and a **simulated_annealing/src/lib.rs** file.
 
 I normally put as much code into the library and keep the script as slender as possible.
 
-Which data structures do we need?
+## For the class - which data structures do we need?
 
  1. The 'expression' data
  2. The rows <-> cluster connections
@@ -43,8 +37,8 @@ pub struct SimulatedAnnealing {
     k: usize,
     /// the actual temerature
     temp:f32,
-
 }
+
 impl SimulatedAnnealing {
     pub fn new( file_path:&str, k:usize, temp:f32, split:char ) -> Self{
 
@@ -66,7 +60,11 @@ impl SimulatedAnnealing {
 
 This will define a class with the variables data, rownames, clusters, k and temp as well as the new() function for this class, which in turn populates these variables with initial values. Save the file and try to compile your project using
 
-```{bash}
+```{bash eval=FALSE}
+cargo test -r
+```
+
+```{bash echo=FALSE}
 make step1 |  sed 's/\x1B\[[0-9;]*m//g'
 ```
 
@@ -176,7 +174,7 @@ if (!file.exists(file_path)) {
 }
 ```
 
-### Step 2: Read the File Line by Line
+### Step 2: Prepare the Variables
 ```rust
 let reader = BufReader::new(file);
 let mut data = Vec::new();
@@ -299,9 +297,11 @@ wget https://github.com/shambam/R_programming_1/raw/refs/heads/main/Spellman_Yea
 
 Now you can compile and test that the file is read correctly:
 
-```{bash}
-# you run this: cargo test -r
+```{bash eval=FALSE}
+cargo test -r
+```
 
+```{bash echo=FALSE}
 make step2 |  sed 's/\x1B\[[0-9;]*m//g'
 ```
 
