@@ -1,4 +1,4 @@
-# main.rs
+# The Program Logiocs is Implemented in main.rs
 
 If you compile the library as it is you will not be able to use it.
 We need to implement the main.rs file that codes for the binary.

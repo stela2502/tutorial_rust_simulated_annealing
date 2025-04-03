@@ -55,3 +55,6 @@ example-teststest_binary.rs
 summary
 implement-the-simulated-annealing-algorithm
 we-have-an-executable
+the-program-logiocs-is-implemented-in-main.rs
+implement-a-print-for-our-class
+take-home-message

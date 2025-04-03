@@ -1,14 +1,5 @@
-[0m[1m[33mwarning[0m[0m[1m: unused variable: `temp`[0m
-[0m   [0m[0m[1m[38;5;12m--> [0m[0msrc/lib.rs:128:44[0m
-[0m    [0m[0m[1m[38;5;12m|[0m
-[0m[1m[38;5;12m128[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    pub fn run( &mut self, max_iter:usize, temp:f32, cool:f32 ) -> usize {[0m
-[0m    [0m[0m[1m[38;5;12m|[0m[0m                                            [0m[0m[1m[33m^^^^[0m[0m [0m[0m[1m[33mhelp: if this is intentional, prefix it with an underscore: `_temp`[0m
-[0m    [0m[0m[1m[38;5;12m|[0m
-[0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: `#[warn(unused_variables)]` on by default[0m
-
-[1m[33mwarning[0m[1m:[0m `simulated_annealing` (lib) generated 1 warning
-[1m[33mwarning[0m[1m:[0m `simulated_annealing` (lib test) generated 1 warning (1 duplicate)
-[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`release` profile [optimized]]8;;\ target(s) in 0.04s
+[1m[32m   Compiling[0m simulated_annealing v0.1.0 (/home/med-sal/git_Projects/tutorial_rust_simulated_annealing/rust_stages/step3)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`release` profile [optimized]]8;;\ target(s) in 0.86s
 [1m[32m     Running[0m unittests src/lib.rs (target/release/deps/simulated_annealing-ec0f849373011f09)
 
 running 2 tests

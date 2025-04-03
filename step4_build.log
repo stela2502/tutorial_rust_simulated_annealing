@@ -1,3 +1,4 @@
+[1m[32m   Compiling[0m simulated_annealing v0.1.0 (/home/med-sal/git_Projects/tutorial_rust_simulated_annealing/rust_stages/step4)
 [0m[1m[33mwarning[0m[0m[1m: unused variable: `iterations`[0m
 [0m  [0m[0m[1m[38;5;12m--> [0m[0msrc/main.rs:48:9[0m
 [0m   [0m[0m[1m[38;5;12m|[0m
@@ -8,12 +9,12 @@
 
 [1m[33mwarning[0m[1m:[0m `simulated_annealing` (bin "simulated_annealing" test) generated 1 warning
 [1m[33mwarning[0m[1m:[0m `simulated_annealing` (bin "simulated_annealing") generated 1 warning (1 duplicate)
-[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`release` profile [optimized]]8;;\ target(s) in 0.04s
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`release` profile [optimized]]8;;\ target(s) in 1.23s
 [1m[32m     Running[0m unittests src/lib.rs (target/release/deps/simulated_annealing-ec0f849373011f09)
 
 running 2 tests
-test tests::tes_scale01 ... ok
 test tests::test_read_data ... ok
+test tests::tes_scale01 ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 

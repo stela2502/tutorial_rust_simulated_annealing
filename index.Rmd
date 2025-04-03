@@ -15,10 +15,10 @@ github-repo: stela2502/tutorial_rust_simulated_annealing
 ---
 
 
-{r child="01-intro.Rmd"}
-{r child="02-Variables.Rmd"}
-{r child="03-read_data.Rmd"}
-{r child="04-SimulatedAnnealing.Rmd"}
-{r child="05-the_binary.Rmd"}
-{r child="80-ErrorHandling.Rmd"}
-{r child="81_testing.Rmd"}
+#```{r child="01-intro.Rmd"}
+#```{r child="02-Variables.Rmd"}
+#```{r child="03-read_data.Rmd"}
+#```{r child="04-SimulatedAnnealing.Rmd"}
+#```{r child="05-the_binary.Rmd"}
+#```{r child="80-ErrorHandling.Rmd"}
+#```{r child="81_testing.Rmd"}
