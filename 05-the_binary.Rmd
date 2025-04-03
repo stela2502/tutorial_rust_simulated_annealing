@@ -1,7 +1,33 @@
-# The Program Logiocs is Implemented in main.rs
+# Rust Program Logioc is Implemented in "main.rs"
 
 If you compile the library as it is you will not be able to use it.
 We need to implement the main.rs file that codes for the binary.
+
+The R version of what we implement here is this:
+```
+
+ycc <- read.delim("../Spellman_Yeast_Cell_Cycle.tsv",row.names=1,header=T,sep="\t")
+ycc <- as.matrix(ycc)
+ycc.01 <- t(apply(ycc,1,scale.01))
+
+
+
+
+system.time(proc.time(clus <- sa.ok(ycc.01,10,25000,20,0.995)))
+
+# plot the clusters using base R
+par(mfrow=c(3,4))
+
+for(i in 1:max(clus)){
+  
+  ycc.c <- ycc.01[which(clus==i),]
+  plot(ycc.c[1,],ty="l",ylim=range(ycc.c))
+  apply(ycc.c,1,lines)
+  
+}
+```
+
+But as we implement this functionality as executable it would be better to not hardcode the options:
 
 Command line options are normally parsed using the clap crate so we should add that to our project.
 This time I want a specific version:
@@ -10,7 +36,7 @@ This time I want a specific version:
 cargo add clap@3.0.14 --features derive
 ```
 
-We need to get the input table, the separation for that table, the number of clusters to search for, the starting tem, cool-down factor and max iteration to run through as well as the file we want to save the clusters to. In Rust you would do this like that:
+We need to get the input table, the separating char for that table, the number of clusters to search for, the starting temperature, cool-down factor and max iterations to run through as well as the file we want to save the clusters to. In Rust you would do this like that:
 
 ```
 use clap::Parser;
@@ -43,9 +69,25 @@ struct Opts {
 
 ```
 
-This is simple -right?
+Here's a breakdown of what it's doing:
 
-Add the main function to that script and we are ready to go:
+    1. **use clap::Parser;:** This imports the necessary functionality from the clap crate, which is used for parsing command-line arguments.
+
+    2. **#[derive(Parser)]:** This macro automatically implements the Parser trait for the Opts struct. This allows the struct to be used for argument parsing in the CLI.
+
+    3. **#[clap(version = "1.0.0", author = "Stefan L. <stefan.lang@med.lu.se>")]:** This defines metadata for the program such as its version and author, which will be shown when the user runs the command with a --version or --help flag.
+
+    4. **struct Opts { ... }:** The Opts struct holds the various command-line arguments that the program will accept.
+    Each three lines corresponds to a command-line argument with hep srting, options and variable definition.
+
+The different clap options we are using here mean
+
+-- **shot** use the variable names first character for a short option like -f for file
+-- **long** use the variable name as long option line --file for file
+-- **default_value** the default String value if the user does not specify one
+-- **default_value_t**used for default values that are not a String
+
+Add this main function to that script and we are ready to go:
 
 ```
 use std::time::SystemTime;
@@ -121,9 +163,11 @@ target/release/simulated_annealing  -f tests/data/Spellman_Yeast_Cell_Cycle.tsv 
 
 ## Implement a 'print' for our Class
 
-The output from this program lacks. We would like to know how the energies of the system were in the beginning and the end.
+The output from this program lacks some information! We would like to know how the energies of the system in the beginning and after the process has finished.
 
-To implement that we need this in our library file, not the impl block:
+To implement that we need to implement Rusts equivalent of a S3 print() or S4 show() function.
+
+This code is a different syntax from our main "impl" block and therefore needs to be placed outside of it:
 
 ```
 use std::fmt;
@@ -190,19 +234,19 @@ fn main() {
 }
 ```
 
-I have not modified my examples here - so this is something y<ou can do all for yourself.
+I have not modified my examples here - so this is something you can do all for yourself.
 If we have more time we could implement one more improvement to the library:
 
-Add a store variable into the system and calculate the row to row distances after you have scaled the data.
+Add a store variable into the class and calculate the row to row distances after you have scaled the data.
 Then modify the calc_ek() function to use the values from the store and not calculate the distances every single time.
-This should give you an additional x5 speed improvement.
+This should give you an additional x5 speed improvement if you store it as a Vec<Vec<f32>> again. If you use a single vector and an index function you cold get an even better performance.
 
 ## Take Home Message
 
 The implementation of the functions is significantly different from R or Python, but with the compiler and the AI assistance we can get at the moment it is doable. It takes time to get into, but the speed improvements can be enormous.
 
-This example here does not really highlight the usability, but if you have more complicated tasks - like processing bam files or anything else that is either easy to implement in a multiprocessor system or needs to process binary data it is worth to look into Rust. It is significantly slower than C and C++ (like 3 to 5 times?), but it is so much easier to program in if you come from R and Python - it is worth it.
+This example here does not really highlight the usability as the R code also finished in a resonable amount of time, but if you have more complicated tasks - like processing bam files or anything else that is either easy to implement in a multiprocessor system or needs to process binary data it is worth to look into Rust. It is somewhat slower than C and C++ (like 3 to 5 times?), but Rust is so much easier to program in if you come from R and Python - it is worth it.
 
-By the way - even with the store this implementation is about 50\% slower than another implementation I used before where the data was not stored in a Vec<Vec<f32>> but a more complicated single Vector (precicely a ArrayBase<ndarray::OwnedRepr<f64>, Dim<[usize; 2]>>). But for the sake of this tutorial I think a Vec<Vec<_>> is easier to work with. You can check out my other implementation [here](https://github.com/stela2502/simulated_annealing).
+By the way - I used a ArrayBase<ndarray::OwnedRepr<f64>, Dim<[usize; 2]>> for my store and gained another speed boost of factor 2. Given the fact that this takes either 60 or 30 milliseconds this is no big deal. For the sake of this tutorial I think a Vec<Vec<_>> is easier to work with. You can check out my other implementation [here](https://github.com/stela2502/simulated_annealing).
 
 

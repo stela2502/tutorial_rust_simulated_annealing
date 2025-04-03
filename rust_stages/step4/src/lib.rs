@@ -168,9 +168,6 @@ impl SimulatedAnnealing {
           }
           // cool the system and exit if it reached ~0
           self.temp *= cool;
-          if self.temp < 1e-8{
-              break
-          }
       }
       it
     }

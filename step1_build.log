@@ -1,27 +1,27 @@
-[1m[32m   Compiling[0m simulated_annealing v0.1.0 (/home/med-sal/git_Projects/tutorial_rust_simulated_annealing/rust_stages/step1)
-[0m[1m[38;5;9merror[E0599][0m[0m[1m: no function or associated item named `read_table_with_names` found for struct `SimulatedAnnealing` in the current scope[0m
-[0m  [0m[0m[1m[38;5;12m--> [0m[0msrc/lib.rs:21:38[0m
-[0m   [0m[0m[1m[38;5;12m|[0m
-[0m[1m[38;5;12m2[0m[0m  [0m[0m[1m[38;5;12m|[0m[0m [0m[0mpub struct SimulatedAnnealing {[0m
-[0m   [0m[0m[1m[38;5;12m|[0m[0m [0m[0m[1m[38;5;12m-----------------------------[0m[0m [0m[0m[1m[38;5;12mfunction or associated item `read_table_with_names` not found for this struct[0m
-[0m[1m[38;5;12m...[0m
-[0m[1m[38;5;12m21[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m        let (rownames, data) = Self::read_table_with_names( file_path, split ).unwrap();[0m
-[0m   [0m[0m[1m[38;5;12m|[0m[0m                                      [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mfunction or associated item not found in `SimulatedAnnealing`[0m
-[0m   [0m[0m[1m[38;5;12m|[0m
-[0m[1m[38;5;10mnote[0m[0m: if you're trying to build a new `SimulatedAnnealing`, consider using `SimulatedAnnealing::new` which returns `SimulatedAnnealing`[0m
-[0m  [0m[0m[1m[38;5;12m--> [0m[0msrc/lib.rs:19:5[0m
-[0m   [0m[0m[1m[38;5;12m|[0m
-[0m[1m[38;5;12m19[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    pub fn new( file_path:&str, k:usize, temp:f32, split:char ) -> Self{[0m
-[0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;10m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+   Compiling simulated_annealing v0.1.0 (/home/med-sal/git_Projects/tutorial_rust_simulated_annealing/rust_stages/step1)
+error[E0599]: no function or associated item named `read_table_with_names` found for struct `SimulatedAnnealing` in the current scope
+  --> src/lib.rs:21:38
+   |
+2  | pub struct SimulatedAnnealing {
+   | ----------------------------- function or associated item `read_table_with_names` not found for this struct
+...
+21 |         let (rownames, data) = Self::read_table_with_names( file_path, split ).unwrap();
+   |                                      ^^^^^^^^^^^^^^^^^^^^^ function or associated item not found in `SimulatedAnnealing`
+   |
+note: if you're trying to build a new `SimulatedAnnealing`, consider using `SimulatedAnnealing::new` which returns `SimulatedAnnealing`
+  --> src/lib.rs:19:5
+   |
+19 |     pub fn new( file_path:&str, k:usize, temp:f32, split:char ) -> Self{
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-[0m[1m[38;5;9merror[E0433][0m[0m[1m: failed to resolve: use of undeclared crate or module `rand`[0m
-[0m  [0m[0m[1m[38;5;12m--> [0m[0msrc/lib.rs:23:60[0m
-[0m   [0m[0m[1m[38;5;12m|[0m
-[0m[1m[38;5;12m23[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m        let clusters: Vec<usize> = rownames.iter().map(|_| rand::thread_rng().gen_range(0..k)).collect();[0m
-[0m   [0m[0m[1m[38;5;12m|[0m[0m                                                            [0m[0m[1m[38;5;9m^^^^[0m[0m [0m[0m[1m[38;5;9muse of undeclared crate or module `rand`[0m
+error[E0433]: failed to resolve: use of undeclared crate or module `rand`
+  --> src/lib.rs:23:60
+   |
+23 |         let clusters: Vec<usize> = rownames.iter().map(|_| rand::thread_rng().gen_range(0..k)).collect();
+   |                                                            ^^^^ use of undeclared crate or module `rand`
 
-[0m[1mSome errors have detailed explanations: E0433, E0599.[0m
-[0m[1mFor more information about an error, try `rustc --explain E0433`.[0m
-[1m[31merror[0m[1m:[0m could not compile `simulated_annealing` (lib) due to 2 previous errors
-[1m[33mwarning[0m[1m:[0m build failed, waiting for other jobs to finish...
-[1m[31merror[0m[1m:[0m could not compile `simulated_annealing` (lib test) due to 2 previous errors
+Some errors have detailed explanations: E0433, E0599.
+For more information about an error, try `rustc --explain E0433`.
+error: could not compile `simulated_annealing` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `simulated_annealing` (lib test) due to 2 previous errors
