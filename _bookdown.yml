@@ -1,0 +1,12 @@
+title: "Simulated Annealing in Rust"
+author: "Stefan Lang"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+output:
+  html_document:
+    self_contained: true
+    toc: true      # Table of contents
+    toc_depth: 2   # Depth of the table of contents
+    theme: "cosmo" # Optional: You can change the theme if desired
