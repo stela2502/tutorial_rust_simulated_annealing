@@ -1,4 +1,12 @@
-# Using Rust to Implement the Simulatied Annealing Algorithm
+```{r, include=FALSE}
+params = list(
+  "this" = "using-rust-to-implement-the-simulated-annealing-algorithm",
+  "next" = "variables---strict-types-and-ownership-in-rust.html",
+  "previous" = NULL
+)
+```
+
+# Using Rust to Implement the Simulated Annealing Algorithm
 
 This tutorial is for experienced bioinformaticians who have been programming in R and/or Python, or other scripting languages. If you have experience with C, C++, or Julia, that will also be beneficial.
 
@@ -123,4 +131,11 @@ I do not want to focus too much onto the algoirithm here as the main forcus is o
 And all of that in Rust ;-)
 
 
-
+```{r, echo=FALSE, results='asis'}
+if (!is.null(params[['previous']])) {
+  cat(sprintf('<a href="%s" class="btn" id="prev">⬅️ Previous</a>', params[['previous']]))
+}
+if (!is.null(params[['next']])) {
+  cat(sprintf('<a href="%s" class="btn" id="next">Next ➡️</a>', params[['next']]))
+}
+```

@@ -1,3 +1,11 @@
+```{r include=FALSE }
+params = list(
+  "previous" = "create-a-rust-project-and-implement-the-class",
+  "this"= "implement-the-simulated-annealing-algorithm",
+  "next"= "rust-program-logioc-is-implemented-in-main"
+)
+```
+
 # Implement the Simulated Annealing Algorithm
 
 The idea behind this workshop is not to teach you how to implement the simulated annealing algorithm, but to show you how you can start to use Rust.
@@ -154,7 +162,7 @@ This said there are libraries that allow the Rust code to look more like the R c
 This comparison shows how the same calculation is done in both R and Rust. While the logic is similar, Rust provides more explicit control over memory and data access, which can lead to greater performance for large datasets. However, the R version is simpler and easier to understand for those already familiar with R's high-level functions.
 
 
-## The main function
+## The main worker function
 
 The R code provided implements the simulated annealing algorithm in the following steps:
 
@@ -400,3 +408,12 @@ make step3|  sed 's/\x1B\[[0-9;]*m//g'
 
 This looks good, just that we can not use this library as we have not implemented the executable :-D 
 
+
+```{r, echo=FALSE, results='asis'}
+if (!is.null(params[['previous']])) {
+  cat(sprintf('<a href="%s" class="btn" id="prev">⬅️ Previous</a>', params[['previous']]))
+}
+if (!is.null(params[['next']])) {
+  cat(sprintf('<a href="%s" class="btn" id="next">Next ➡️</a>', params[['next']]))
+}
+```

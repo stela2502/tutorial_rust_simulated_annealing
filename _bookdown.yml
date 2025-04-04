@@ -6,10 +6,12 @@ language:
     chapter_name: "Chapter "
 output:
   html_document:
+    in_header: null
     self_contained: true
     toc: true      # Table of contents
     toc_depth: 2   # Depth of the table of contents
-    theme: "cosmo" # Optional: You can change the theme if desired
+    theme: "flatly" # Optional: You can change the theme if desired
+    css: styles.css
 rmd_files: [
   "index.Rmd",
   "01-intro.Rmd",

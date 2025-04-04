@@ -1,3 +1,11 @@
+```{r include=FALSE }
+params = list(
+  "previous" = "implement-the-simulated-annealing-algorithm",
+  "this"= "rust-program-logioc-is-implemented-in-main",
+  "next"= NULL
+)
+```
+
 # Rust Program Logioc is Implemented in "main.rs"
 
 If you compile the library as it is you will not be able to use it.
@@ -256,3 +264,13 @@ The implementation of the functions is significantly different from R or Python,
 This example here does not really highlight the usability as the R code also finished in a reasonable amount of time, but if you have more complicated tasks - like processing BAM files or anything else that is (1) either easy to implement in a multiprocessor system or (2) needs to process binary data, it is worth to look into Rust. It is somewhat slower than C and C++ (like 3 to 5 times?), but Rust is so much easier to program in if you come from R and Python - it is worth it.
 
 By the way - I used a ArrayBase<ndarray::OwnedRepr<f64>, Dim<[usize; 2]>> for my store and gained another speed boost of factor 2. Given the fact that this takes either 60 or 30 milliseconds this is no big deal. For the sake of this tutorial I think a Vec<Vec<_>> is easier to work with. You can check out my other implementation [here](https://github.com/stela2502/simulated_annealing).
+
+
+```{r, echo=FALSE, results='asis'}
+if (!is.null(params[['previous']])) {
+  cat(sprintf('<a href="%s" class="btn" id="prev">⬅️ Previous</a>',params[['previous']]))
+}
+if (!is.null(params[['next']])) {
+  cat(sprintf('<a href="%s" class="btn" id="next">Next ➡️</a>',params[['next']))
+}
+```

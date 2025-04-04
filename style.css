@@ -12,3 +12,22 @@ pre {
 pre code {
   white-space: inherit;
 }
+.btn {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  min-width: 120px;
+  text-align: center;
+}
+.btn:hover {
+  background-color: #0056b3;
+}
+#prev {
+  float: left;
+}
+
+#next {
+  float: right;
+}

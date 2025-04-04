@@ -26,7 +26,7 @@ clean: $(STAGES)
 
 # Variables
 BOOK_DIR = _book
-MAIN_PAGE = using-rust-to-implement-the-simulatied-annealing-algorithm.html
+MAIN_PAGE = using-rust-to-implement-the-simulated-annealing-algorithm.html
 INDEX_PAGE = index.html
 REPO_URL = git@github.com:stela2502/tutorial_rust_simulated_annealing.git
 BRANCH = gh-pages

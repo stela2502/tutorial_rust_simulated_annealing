@@ -1,3 +1,10 @@
+```{r include=FALSE }
+params = list(
+  "previous" = "variables---strict-types-and-ownership-in-rust.html",
+  "this"= "create-a-rust-project-and-implement-the-class",
+  "next"= "implement-the-simulated-annealing-algorithm"
+)
+```
 
 # Create a Rust Project and Implement the Class
 
@@ -324,3 +331,11 @@ Test this again.
 
 So all that is left is to implement the main simulated annealing algorithm!
  
+```{r, echo=FALSE, results='asis'}
+if (!is.null(params[['previous']])) {
+  cat(sprintf('<a href="%s" class="btn" id="prev">⬅️ Previous</a>', params[['previous']]))
+}
+if (!is.null(params[['next']])) {
+  cat(sprintf('<a href="%s" class="btn" id="next">Next ➡️</a>', params[['next']]))
+}
+```

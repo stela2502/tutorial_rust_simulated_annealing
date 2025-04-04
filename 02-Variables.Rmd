@@ -17,6 +17,11 @@ knit_engines$set(rust = function(options) {
   ""
 })
 
+params = list(
+  "previous" ="using-rust-to-implement-the-simulated-annealing-algorithm",
+  "this"= "variables---strict-types-and-ownership-in-rust.html",
+  "next"= "create-a-rust-project-and-implement-the-class"
+)
 ```
 
 # Variables - Strict Types and Ownership in Rust
@@ -167,3 +172,12 @@ Rust Ownership!
 - **Rust’s ownership model** prevents issues like double freeing of memory and data races, making it one of the **safest systems languages** available. The rules around ownership, borrowing, and moving data are **central to memory management** in Rust, giving developers fine-grained control over memory safety without a garbage collector.
 
 Even so will not face these problems today it's extremely important to know about this before you try to program in Rust.
+
+```{r, echo=FALSE, results='asis'}
+if (!is.null(params[['previous']])) {
+  cat(sprintf('<a href="%s" class="btn" id="prev">⬅️ Previous</a>', params[['previous']]))
+}
+if (!is.null(params[['next']])) {
+  cat(sprintf('<a href="%s" class="btn" id="next">Next ➡️</a>', params[['next']]))
+}
+```

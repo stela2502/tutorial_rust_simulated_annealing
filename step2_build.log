@@ -1,4 +1,4 @@
-    Finished `release` profile [optimized] target(s) in 0.06s
+    Finished `release` profile [optimized] target(s) in 0.04s
      Running unittests src/lib.rs (target/release/deps/simulated_annealing-ec0f849373011f09)
 
 running 1 test
