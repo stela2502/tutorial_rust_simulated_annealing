@@ -1,4 +1,3 @@
-   Compiling simulated_annealing v0.1.0 (/home/med-sal/git_Projects/tutorial_rust_simulated_annealing/rust_stages/step4)
 warning: unused variable: `iterations`
   --> src/main.rs:48:9
    |
@@ -9,7 +8,7 @@ warning: unused variable: `iterations`
 
 warning: `simulated_annealing` (bin "simulated_annealing" test) generated 1 warning
 warning: `simulated_annealing` (bin "simulated_annealing") generated 1 warning (1 duplicate)
-    Finished `release` profile [optimized] target(s) in 1.20s
+    Finished `release` profile [optimized] target(s) in 0.04s
      Running unittests src/lib.rs (target/release/deps/simulated_annealing-ec0f849373011f09)
 
 running 2 tests

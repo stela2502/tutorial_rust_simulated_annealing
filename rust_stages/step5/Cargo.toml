@@ -1,0 +1,9 @@
+[package]
+name = "simulated_annealing"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "3.0.14", features = ["derive"] }
+plotters = "0.3.7"
+rand = "0.9.0"

@@ -66,28 +66,27 @@ struct Opts {
     #[clap(short, long)]
     outfile: String,
 }
-
 ```
 
 Here's a breakdown of what it's doing:
 
-    1. **use clap::Parser;:** This imports the necessary functionality from the clap crate, which is used for parsing command-line arguments.
+1. **use clap::Parser;:** This imports the necessary functionality from the clap crate, which is used for parsing command-line arguments.
 
-    2. **#[derive(Parser)]:** This macro automatically implements the Parser trait for the Opts struct. This allows the struct to be used for argument parsing in the CLI.
+2. **#[derive(Parser)]:** This macro automatically implements the Parser trait for the Opts struct. This allows the struct to be used for argument parsing in the CLI.
 
-    3. **#[clap(version = "1.0.0", author = "Stefan L. <stefan.lang@med.lu.se>")]:** This defines metadata for the program such as its version and author, which will be shown when the user runs the command with a --version or --help flag.
+3. **#[clap(version = "1.0.0", author = "Stefan L. <stefan.lang@med.lu.se>")]:** This defines metadata for the program such as its version and author, which will be shown when the user runs the command with a --version or --help flag.
 
-    4. **struct Opts { ... }:** The Opts struct holds the various command-line arguments that the program will accept.
+4. **struct Opts { ... }:** The Opts struct holds the various command-line arguments that the program will accept.
     Each three lines corresponds to a command-line argument with hep srting, options and variable definition.
 
 The different clap options we are using here mean
 
--- **shot** use the variable names first character for a short option like -f for file
--- **long** use the variable name as long option line --file for file
--- **default_value** the default String value if the user does not specify one
--- **default_value_t**used for default values that are not a String
+ - **short** use the variable names first character for a short option like -f for file
+ - **long** use the variable name as long option line --file for file
+ - **default_value** the default String value if the user does not specify one
+ - **default_value_t** used for default values that are not a String
 
-Add this main function to that script and we are ready to go:
+The main function is quite simple — half of it is just calculating the time taken for the program to execute. Give it a try!
 
 ```
 use std::time::SystemTime;
@@ -166,7 +165,7 @@ target/release/simulated_annealing  -f tests/data/Spellman_Yeast_Cell_Cycle.tsv 
 cd rust_stages/step4
 
 #and run the script:
-target/release/simulated_annealing  -f tests/data/Spellman_Yeast_Cell_Cycle.tsv --clusters 8 --temp 20 --outfile /tmp/clusters.tsv
+target/release/simulated_annealing  -f tests/data/Spellman_Yeast_Cell_Cycle.tsv --clusters 10 --temp 20 --outfile /tmp/clusters.tsv --cool 0.995 -m 25000
 ```
 
 
