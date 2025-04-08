@@ -1,8 +1,8 @@
 ```{r include=FALSE }
 params = list(
   "previous" = "variables---strict-types-and-ownership-in-rust.html",
-  "this"= "create-a-rust-project-and-implement-the-class",
-  "next"= "implement-the-simulated-annealing-algorithm"
+  "this"= "create-a-rust-project-and-implement-the-class.html",
+  "next"= "implement-the-simulated-annealing-algorithm.html"
 )
 ```
 
@@ -80,7 +80,7 @@ Right - we try to create the random cluster info and have not loaded the require
 ```
 cargo add rand
 ```
-Do not forget to also load that library into the lib.rs. I the top of that file add ``use rand;``.
+Do not forget to also load that library into the lib.rs. I the top of that file add ``use rand::Rng;``.
 
 
 The read_table function is more complicated.

@@ -1,8 +1,8 @@
 ```{r include=FALSE }
 params = list(
-  "previous" = "create-a-rust-project-and-implement-the-class",
-  "this"= "implement-the-simulated-annealing-algorithm",
-  "next"= "rust-program-logioc-is-implemented-in-main"
+  "previous" = "create-a-rust-project-and-implement-the-class.html",
+  "this"= "implement-the-simulated-annealing-algorithm.html",
+  "next"= "rust-program-logioc-is-implemented-in-main.html"
 )
 ```
 
@@ -96,7 +96,7 @@ calc.Ek <- function(m, clus, coi){
 ### How It Works in R
 - R makes use of high-level functions like `which()` and `dist()`, which simplify the implementation but may introduce some overhead due to the creation of intermediate data structures.
 
----
+
 
 ## The Rust Implementation
 
@@ -154,15 +154,12 @@ fn cluster_rows(&self, clus: usize) -> Vec<usize> {
 - Rust gives you more control over memory and data access. The program works with mutable references and does not create intermediate data structures unless necessary.
 - The `cluster_rows` function is used to filter the rows based on the cluster, while the `euclidean_distance` function calculates the pairwise distance.
 
-This said there are libraries that allow the Rust code to look more like the R code, but I want to use as little libraries asa possible here.
+That said, there are libraries that make Rust code look more like R, but I want to use as few libraries as possible here.
+
 ---
 
-## Summary
-
-This comparison shows how the same calculation is done in both R and Rust. While the logic is similar, Rust provides more explicit control over memory and data access, which can lead to greater performance for large datasets. However, the R version is simpler and easier to understand for those already familiar with R's high-level functions.
-
-
 ## The main worker function
+
 
 The R code provided implements the simulated annealing algorithm in the following steps:
 

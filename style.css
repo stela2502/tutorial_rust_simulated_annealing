@@ -13,12 +13,9 @@ pre code {
   white-space: inherit;
 }
 .btn {
-  padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #FFFFFF;
   color: white;
   text-decoration: none;
-  border-radius: 5px;
-  min-width: 120px;
   text-align: center;
 }
 .btn:hover {

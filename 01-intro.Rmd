@@ -1,6 +1,6 @@
 ```{r, include=FALSE}
 params = list(
-  "this" = "using-rust-to-implement-the-simulated-annealing-algorithm",
+  "this" = "using-rust-to-implement-the-simulated-annealing-algorithm.html",
   "next" = "variables---strict-types-and-ownership-in-rust.html",
   "previous" = NULL
 )
@@ -119,7 +119,7 @@ The idea behind simulated annealing is that "bad" moves are also allowed for a p
 
 ## The Algorithm
 
-I do not want to focus too much onto the algoirithm here as the main forcus is on the Rust implementation, but the steps that need to be run are as follows:
+I do not want to focus too much onto the algoirithm here as the main focus is on the Rust implementation, but the steps that need to be run are as follows:
 
   1. Load the data and scale it so each gene's value lie between 0 and 1
   2. Create a random cluster information and calculate the energy of this clustering

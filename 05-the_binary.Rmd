@@ -1,7 +1,7 @@
 ```{r include=FALSE }
 params = list(
-  "previous" = "implement-the-simulated-annealing-algorithm",
-  "this"= "rust-program-logioc-is-implemented-in-main",
+  "previous" = "implement-the-simulated-annealing-algorithm.html",
+  "this"= "rust-program-logioc-is-implemented-in-main.html",
   "next"= NULL
 )
 ```
@@ -149,8 +149,7 @@ fn main() {
 
 ```
 
-The main function is very simple - halve of it is actually calculating the time the program takes to finish.
-Try it?
+Now compile and test it:
 
 ```{bash eval=FALSE}
 cargo test -r
@@ -179,26 +178,43 @@ target/release/simulated_annealing  -f tests/data/Spellman_Yeast_Cell_Cycle.tsv 
 
 ## Implement a 'print' for our Class
 
-The output from this program lacks some information! We would like to know how the energies of the system in the beginning and after the process has finished.
+The output from our simulation is missing key information — we want to display the system's energy before and after processing.
 
-To implement that we need to implement Rusts equivalent of a S3 print() or S4 show() function.
+In an R S3 class, we would implement a custom print method like this:
 
-This code is a different syntax from our main "impl" block and therefore needs to be placed outside of it:
+SCRIPTr
+print.simulatedAnnealing <- function(x) {
+  # Format and display info about x
+}
+SCRIPT
 
-```
+This allows you to simply call `print(x)` and get a meaningful summary of the object.
+
+Rust doesn't have classical inheritance like R's S3/S4 or R6 systems. Instead, Rust uses **traits**, which act like interfaces or capabilities. A type can implement a trait to gain specific behavior — similar to adding methods in R.
+
+To define a custom print format in Rust, we implement the `Display` trait:
+
+SCRIPTrust
 use std::fmt;
 
 impl fmt::Display for SimulatedAnnealing {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut sum = 0.0_f32;
         for i in 0..self.k {
-            sum += self.calc_ek( i );
+            sum += self.calc_ek(i);
         }
         sum /= self.k as f32;
-        write!(f, "SimulatedAnnealing (temperature: {:.2} and total energy {:.2} for {} clusters):\n", self.temp, sum , self.k )
-  }
+        write!(
+            f,
+            "SimulatedAnnealing (temperature: {:.2}, total energy: {:.2} for {} clusters)",
+            self.temp, sum, self.k
+        )
+    }
 }
-```
+SCRIPT
+
+This gives the struct a user-friendly string representation, just like implementing `print()` for a class in R.
+
 
 Afterwards we can change our main.rs and add the print statements:
 
@@ -271,6 +287,6 @@ if (!is.null(params[['previous']])) {
   cat(sprintf('<a href="%s" class="btn" id="prev">⬅️ Previous</a>',params[['previous']]))
 }
 if (!is.null(params[['next']])) {
-  cat(sprintf('<a href="%s" class="btn" id="next">Next ➡️</a>',params[['next']))
+  cat(sprintf('<a href="%s" class="btn" id="next">Next ➡️</a>',params[['next']]))
 }
 ```

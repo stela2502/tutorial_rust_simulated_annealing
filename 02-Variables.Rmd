@@ -18,9 +18,9 @@ knit_engines$set(rust = function(options) {
 })
 
 params = list(
-  "previous" ="using-rust-to-implement-the-simulated-annealing-algorithm",
+  "previous" ="using-rust-to-implement-the-simulated-annealing-algorithm.html",
   "this"= "variables---strict-types-and-ownership-in-rust.html",
-  "next"= "create-a-rust-project-and-implement-the-class"
+  "next"= "create-a-rust-project-and-implement-the-class.html"
 )
 ```
 
