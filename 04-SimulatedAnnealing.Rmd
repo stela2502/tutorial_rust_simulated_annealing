@@ -24,7 +24,7 @@ scale.01 <- function(v){
 }
 ```
 
-At first glance, this function seems to be a simple and effective way to scale a vector of numerical values between 0 and 1. And to state that clearly - it is perfectly valid R code. However, there are several fundamental issues with this implementation.
+At first glance, this function seems to be a simple and effective way to scale a vector of numerical values between 0 and 1. And **to state that clearly - it is perfectly valid R code**. However, there are several fundamental issues with this implementation.
 
 ### The Problems with scale.01
 
