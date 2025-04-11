@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Implement the Simulated Annealing Algorithm | Simulated Annealing in Rust</title>
+  <meta name="description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
+This should be a one day excercise and requires a previouse programming experience, but not necessarily Rust experience.</p>" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Implement the Simulated Annealing Algorithm | Simulated Annealing in Rust" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
+This should be a one day excercise and requires a previouse programming experience, but not necessarily Rust experience.</p>" />
+  <meta name="github-repo" content="stela2502/tutorial_rust_simulated_annealing" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Implement the Simulated Annealing Algorithm | Simulated Annealing in Rust" />
+  
+  <meta name="twitter:description" content="<p>This Tutorial gives a short hands on example of how to read a table into Rust and run some calculations.
+This should be a one day excercise and requires a previouse programming experience, but not necessarily Rust experience.</p>" />
+  
+
+<meta name="author" content="Stefan Lang" />
+
+
+<meta name="date" content="2025-04-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="create-a-rust-project-and-implement-the-class.html"/>
+<link rel="next" href="rust-program-logioc-is-implemented-in-main.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html"><i class="fa fa-check"></i><b>1</b> Using Rust to Implement the Simulated Annealing Algorithm</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#rust-vs.-r-key-differences"><i class="fa fa-check"></i><b>1.1</b> Rust vs. R: Key Differences</a></li>
+<li class="chapter" data-level="1.2" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#a-quick-refresher-object-oriented-programming-oo"><i class="fa fa-check"></i><b>1.2</b> <strong>A Quick Refresher: Object-Oriented Programming (OO)</strong></a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#r-example-object-oriented-approach-using-s3"><i class="fa fa-check"></i><b>1.2.1</b> <strong>R Example: Object-Oriented Approach Using S3</strong></a></li>
+<li class="chapter" data-level="1.2.2" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#rust-equivalent-using-structs-and-traits"><i class="fa fa-check"></i><b>1.2.2</b> <strong>Rust Equivalent: Using Structs and Traits</strong></a></li>
+<li class="chapter" data-level="1.2.3" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#key-takeaways"><i class="fa fa-check"></i><b>1.2.3</b> <strong>Key Takeaways</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#the-problem-clustering-expression-data-using-simulated-annealing"><i class="fa fa-check"></i><b>1.3</b> <strong>The Problem: Clustering Expression Data Using Simulated Annealing</strong></a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#the-data"><i class="fa fa-check"></i><b>1.3.1</b> <strong>The Data</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#simulated-annealing"><i class="fa fa-check"></i><b>1.4</b> Simulated annealing</a></li>
+<li class="chapter" data-level="1.5" data-path="using-rust-to-implement-the-simulated-annealing-algorithm.html"><a href="using-rust-to-implement-the-simulated-annealing-algorithm.html#the-algorithm"><i class="fa fa-check"></i><b>1.5</b> The Algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html"><i class="fa fa-check"></i><b>2</b> Variables - Strict Types and Ownership in Rust</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#strict-types-in-rust"><i class="fa fa-check"></i><b>2.1</b> Strict Types in Rust</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#example-1-strict-typing-in-rust"><i class="fa fa-check"></i><b>2.1.1</b> Example 1: Strict Typing in Rust</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#ownership-in-rust"><i class="fa fa-check"></i><b>2.2</b> Ownership in Rust</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#ownership-rules-in-rust"><i class="fa fa-check"></i><b>2.2.1</b> Ownership Rules in Rust:</a></li>
+<li class="chapter" data-level="2.2.2" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#example-2-ownership-in-rust"><i class="fa fa-check"></i><b>2.2.2</b> Example 2: Ownership in Rust</a></li>
+<li class="chapter" data-level="2.2.3" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#example-3-borrowing-in-rust"><i class="fa fa-check"></i><b>2.2.3</b> Example 3: Borrowing in Rust</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#combining-types-and-ownership"><i class="fa fa-check"></i><b>2.3</b> Combining Types and Ownership</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#output"><i class="fa fa-check"></i><b>2.3.1</b> Output:</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="variables---strict-types-and-ownership-in-rust.html"><a href="variables---strict-types-and-ownership-in-rust.html#summary-of-ownership-and-strict-types"><i class="fa fa-check"></i><b>2.4</b> Summary of Ownership and Strict Types:</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html"><i class="fa fa-check"></i><b>3</b> Create a Rust Project and Implement the Class</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#for-the-class---which-data-structures-do-we-need"><i class="fa fa-check"></i><b>3.1</b> For the class - which data structures do we need?</a></li>
+<li class="chapter" data-level="3.2" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#function-overview"><i class="fa fa-check"></i><b>3.2</b> Function Overview</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#function-signature"><i class="fa fa-check"></i><b>3.2.1</b> Function Signature</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#breaking-it-down"><i class="fa fa-check"></i><b>3.3</b> Breaking It Down</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#step-1-open-the-file"><i class="fa fa-check"></i><b>3.3.1</b> Step 1: Open the File</a></li>
+<li class="chapter" data-level="3.3.2" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#step-2-prepare-the-variables"><i class="fa fa-check"></i><b>3.3.2</b> Step 2: Prepare the Variables</a></li>
+<li class="chapter" data-level="3.3.3" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#step-3-parse-each-line"><i class="fa fa-check"></i><b>3.3.3</b> Step 3: Parse Each Line</a></li>
+<li class="chapter" data-level="3.3.4" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#step-4-extract-row-names"><i class="fa fa-check"></i><b>3.3.4</b> Step 4: Extract Row Names</a></li>
+<li class="chapter" data-level="3.3.5" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#step-5-convert-remaining-values-to-f32"><i class="fa fa-check"></i><b>3.3.5</b> Step 5: Convert Remaining Values to <code>f32</code></a></li>
+<li class="chapter" data-level="3.3.6" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#step-6-return-the-parsed-data"><i class="fa fa-check"></i><b>3.3.6</b> Step 6: Return the Parsed Data</a></li>
+<li class="chapter" data-level="3.3.7" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#why-are-there-so-many-ways-to-create-the-error"><i class="fa fa-check"></i><b>3.3.7</b> Why are there so many ways to create the error?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#adding-a-test-for-read_table_with_names"><i class="fa fa-check"></i><b>3.4</b> Adding a Test for <code>read_table_with_names</code></a></li>
+<li class="chapter" data-level="3.5" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#implementing-a-unit-test"><i class="fa fa-check"></i><b>3.5</b> Implementing a Unit Test</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="create-a-rust-project-and-implement-the-class.html"><a href="create-a-rust-project-and-implement-the-class.html#explanation-2"><i class="fa fa-check"></i><b>3.5.1</b> Explanation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html"><i class="fa fa-check"></i><b>4</b> Implement the Simulated Annealing Algorithm</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#scaling-of-the-data-or-why-scale.01-in-r-is-fundamentally-flawed"><i class="fa fa-check"></i><b>4.1</b> scaling of the data or “why <code>scale.01</code> in R is Fundamentally Flawed”</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#the-r-implementation"><i class="fa fa-check"></i><b>4.1.1</b> The R Implementation</a></li>
+<li class="chapter" data-level="4.1.2" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#the-problems-with-scale.01"><i class="fa fa-check"></i><b>4.1.2</b> The Problems with scale.01</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#the-rust-approach"><i class="fa fa-check"></i><b>4.2</b> The Rust Approach</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#why-the-rust-approach-is-better"><i class="fa fa-check"></i><b>4.2.1</b> Why the Rust Approach is Better</a></li>
+<li class="chapter" data-level="4.2.2" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#summary"><i class="fa fa-check"></i><b>4.2.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#calculating-cluster-energy"><i class="fa fa-check"></i><b>4.3</b> Calculating Cluster Energy</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#explanation-of-the-r-code"><i class="fa fa-check"></i><b>4.3.1</b> Explanation of the R Code</a></li>
+<li class="chapter" data-level="4.3.2" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#how-it-works-in-r"><i class="fa fa-check"></i><b>4.3.2</b> How It Works in R</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#the-rust-implementation"><i class="fa fa-check"></i><b>4.4</b> The Rust Implementation</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#explanation-of-the-rust-code"><i class="fa fa-check"></i><b>4.4.1</b> Explanation of the Rust Code</a></li>
+<li class="chapter" data-level="4.4.2" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#how-it-works-in-rust"><i class="fa fa-check"></i><b>4.4.2</b> How It Works in Rust</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#the-main-worker-function"><i class="fa fa-check"></i><b>4.5</b> The main worker function</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#rust-implementation"><i class="fa fa-check"></i><b>4.5.1</b> Rust Implementation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="implement-the-simulated-annealing-algorithm.html"><a href="implement-the-simulated-annealing-algorithm.html#and-funtions-to-plot-and-write-the-data"><i class="fa fa-check"></i><b>4.6</b> And Funtions to Plot and Write the Data</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="rust-program-logioc-is-implemented-in-main.html"><a href="rust-program-logioc-is-implemented-in-main.html"><i class="fa fa-check"></i><b>5</b> Rust Program Logioc is Implemented in “main.rs”</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="rust-program-logioc-is-implemented-in-main.html"><a href="rust-program-logioc-is-implemented-in-main.html#we-have-an-executable"><i class="fa fa-check"></i><b>5.1</b> We have an Executable!!</a></li>
+<li class="chapter" data-level="5.2" data-path="rust-program-logioc-is-implemented-in-main.html"><a href="rust-program-logioc-is-implemented-in-main.html#implement-a-print-for-our-class"><i class="fa fa-check"></i><b>5.2</b> Implement a ‘print’ for our Class</a></li>
+<li class="chapter" data-level="5.3" data-path="rust-program-logioc-is-implemented-in-main.html"><a href="rust-program-logioc-is-implemented-in-main.html#take-home-message"><i class="fa fa-check"></i><b>5.3</b> Take Home Message</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="error-handling.html"><a href="error-handling.html"><i class="fa fa-check"></i><b>6</b> Error Handling in Rust</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="error-handling.html"><a href="error-handling.html#unrecoverable-errors-panic"><i class="fa fa-check"></i><b>6.1</b> 1. Unrecoverable Errors (<code>panic!</code>)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="error-handling.html"><a href="error-handling.html#example"><i class="fa fa-check"></i><b>6.1.1</b> Example:</a></li>
+<li class="chapter" data-level="6.1.2" data-path="error-handling.html"><a href="error-handling.html#when-to-use-panic"><i class="fa fa-check"></i><b>6.1.2</b> When to Use <code>panic!()</code></a></li>
+<li class="chapter" data-level="6.1.3" data-path="error-handling.html"><a href="error-handling.html#handling-panics-gracefully"><i class="fa fa-check"></i><b>6.1.3</b> Handling Panics Gracefully</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="error-handling.html"><a href="error-handling.html#recoverable-errors-resultt-e"><i class="fa fa-check"></i><b>6.2</b> 2. Recoverable Errors (<code>Result&lt;T, E&gt;</code>)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="error-handling.html"><a href="error-handling.html#example-1"><i class="fa fa-check"></i><b>6.2.1</b> Example:</a></li>
+<li class="chapter" data-level="6.2.2" data-path="error-handling.html"><a href="error-handling.html#resultt-e-explanation"><i class="fa fa-check"></i><b>6.2.2</b> <code>Result&lt;T, E&gt;</code> Explanation</a></li>
+<li class="chapter" data-level="6.2.3" data-path="error-handling.html"><a href="error-handling.html#common-ways-to-handle-resultt-e"><i class="fa fa-check"></i><b>6.2.3</b> Common Ways to Handle <code>Result&lt;T, E&gt;</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="error-handling.html"><a href="error-handling.html#custom-errors-with-thiserror-and-anyhow"><i class="fa fa-check"></i><b>6.3</b> 3. Custom Errors with <code>thiserror</code> and <code>anyhow</code></a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="error-handling.html"><a href="error-handling.html#using-thiserror-for-custom-errors"><i class="fa fa-check"></i><b>6.3.1</b> Using <code>thiserror</code> for Custom Errors</a></li>
+<li class="chapter" data-level="6.3.2" data-path="error-handling.html"><a href="error-handling.html#using-anyhow-for-simpler-error-handling"><i class="fa fa-check"></i><b>6.3.2</b> Using <code>anyhow</code> for Simpler Error Handling</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="error-handling.html"><a href="error-handling.html#summary-of-rust-error-handling-techniques"><i class="fa fa-check"></i><b>6.4</b> Summary of Rust Error Handling Techniques</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>7</b> Testing in Rust</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="testing.html"><a href="testing.html#writing-basic-unit-tests"><i class="fa fa-check"></i><b>7.1</b> 1. Writing Basic Unit Tests</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="testing.html"><a href="testing.html#example-2"><i class="fa fa-check"></i><b>7.1.1</b> Example:</a></li>
+<li class="chapter" data-level="7.1.2" data-path="testing.html"><a href="testing.html#common-assertions"><i class="fa fa-check"></i><b>7.1.2</b> Common Assertions:</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="testing.html"><a href="testing.html#running-tests"><i class="fa fa-check"></i><b>7.2</b> 2. Running Tests</a></li>
+<li class="chapter" data-level="7.3" data-path="testing.html"><a href="testing.html#testing-for-panics"><i class="fa fa-check"></i><b>7.3</b> 3. Testing for Panics</a></li>
+<li class="chapter" data-level="7.4" data-path="testing.html"><a href="testing.html#using-resultt-e-in-tests"><i class="fa fa-check"></i><b>7.4</b> 4. Using <code>Result&lt;T, E&gt;</code> in Tests</a></li>
+<li class="chapter" data-level="7.5" data-path="testing.html"><a href="testing.html#ignoring-tests"><i class="fa fa-check"></i><b>7.5</b> 5. Ignoring Tests</a></li>
+<li class="chapter" data-level="7.6" data-path="testing.html"><a href="testing.html#benchmarking-with-bench"><i class="fa fa-check"></i><b>7.6</b> 6. Benchmarking with <code>#[bench]</code></a></li>
+<li class="chapter" data-level="7.7" data-path="testing.html"><a href="testing.html#integration-tests"><i class="fa fa-check"></i><b>7.7</b> 7. Integration Tests</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="testing.html"><a href="testing.html#example-testsintegration_test.rs"><i class="fa fa-check"></i><b>7.7.1</b> Example <code>tests/integration_test.rs</code>:</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="testing.html"><a href="testing.html#testing-the-executable"><i class="fa fa-check"></i><b>7.8</b> 8. Testing the Executable</a>
+<ul>
+<li class="chapter" data-level="7.8.1" data-path="testing.html"><a href="testing.html#example-teststest_binary.rs"><i class="fa fa-check"></i><b>7.8.1</b> Example <code>tests/test_binary.rs</code>:</a></li>
+</ul></li>
+<li class="chapter" data-level="7.9" data-path="testing.html"><a href="testing.html#summary-1"><i class="fa fa-check"></i><b>7.9</b> Summary</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Simulated Annealing in Rust</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="implement-the-simulated-annealing-algorithm" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Implement the Simulated Annealing Algorithm<a href="implement-the-simulated-annealing-algorithm.html#implement-the-simulated-annealing-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The idea behind this workshop is not to teach you how to implement the simulated annealing algorithm, but to show you how you can start to use Rust.
+Therefore we will use Shamit’s R implementation and convert that to Rust.</p>
+<div id="scaling-of-the-data-or-why-scale.01-in-r-is-fundamentally-flawed" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> scaling of the data or “why <code>scale.01</code> in R is Fundamentally Flawed”<a href="implement-the-simulated-annealing-algorithm.html#scaling-of-the-data-or-why-scale.01-in-r-is-fundamentally-flawed" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="the-r-implementation" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> The R Implementation<a href="implement-the-simulated-annealing-algorithm.html#the-r-implementation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The scale.01 function in R is defined as follows:</p>
+<pre><code>scale.01 &lt;- function(v){
+  sc.01 &lt;- (v - min(v)) / (max(v) - min(v))
+  sc.01
+}</code></pre>
+<p>At first glance, this function seems to be a simple and effective way to scale a vector of numerical values between 0 and 1. And <strong>to state that clearly - it is perfectly valid R code</strong>. However, there are several fundamental issues with this implementation.</p>
+</div>
+<div id="the-problems-with-scale.01" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> The Problems with scale.01<a href="implement-the-simulated-annealing-algorithm.html#the-problems-with-scale.01" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Inefficiency:</strong> The function computes min(v) and max(v) twice. This is unnecessary and can significantly slow down performance when applied to large vectors.</p></li>
+<li><p><strong>Vectorized but Inefficient in Apply Calls:</strong> The function is designed to be used in an apply() statement, which is idiomatic in R. However, repeatedly calling this function on subsets of data results in redundant computations.</p></li>
+<li><p><strong>Mutation vs. Copying:</strong> In R, this function creates a new vector instead of modifying the existing one in place. This is inefficient for large datasets and contrasts with best practices in languages like Rust.</p></li>
+</ol>
+</div>
+</div>
+<div id="the-rust-approach" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> The Rust Approach<a href="implement-the-simulated-annealing-algorithm.html#the-rust-approach" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In Rust, the equivalent function would modify the existing data structure in place for efficiency. Here’s an example:</p>
+<pre><code>pub fn scale_01(&amp;mut self) {
+    for row in &amp;mut self.data {
+        let mut min = f32::INFINITY;
+        let mut max = f32::NEG_INFINITY;
+        
+        for &amp;value in row.iter() {
+            min = min.min(value);
+            max = max.max(value);
+        }
+        
+        for value in row.iter_mut() {
+            *value = (*value - min) / (max - min);
+        }
+    }
+}</code></pre>
+<div id="why-the-rust-approach-is-better" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Why the Rust Approach is Better<a href="implement-the-simulated-annealing-algorithm.html#why-the-rust-approach-is-better" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>In-Place Modification:</strong> The Rust function modifies the existing data structure instead of creating unnecessary copies.</p></li>
+<li><p><strong>Optimized Min/Max Computation:</strong> The min and max values are computed only once per row, avoiding redundant calculations.</p></li>
+<li><p><strong>Memory Efficiency:</strong> By avoiding extra allocations, the Rust implementation is more memory-efficient, making it suitable for large datasets.</p></li>
+<li><p><strong>Safety &amp; Performance:</strong> Rust enforces strict memory safety and avoids unintended data duplication, unlike R, where copies can be created implicitly.</p></li>
+</ol>
+</div>
+<div id="summary" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Summary<a href="implement-the-simulated-annealing-algorithm.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>R makes vectorized operations look simple but hides inefficiencies.</li>
+<li>Rust requires explicit memory management but ensures better performance and correctness.</li>
+</ul>
+</div>
+</div>
+<div id="calculating-cluster-energy" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Calculating Cluster Energy<a href="implement-the-simulated-annealing-algorithm.html#calculating-cluster-energy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The R function <code>calc.Ek</code> calculates the energy of a specific cluster in a dataset. Here’s the R code:</p>
+<pre><code>calc.Ek &lt;- function(m, clus, coi){
+  clus.d &lt;- m[which(clus == coi), ]
+  Ek &lt;- sum(dist(clus.d))
+  Ek
+}</code></pre>
+<div id="explanation-of-the-r-code" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Explanation of the R Code<a href="implement-the-simulated-annealing-algorithm.html#explanation-of-the-r-code" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Selecting Rows for the Cluster</strong>:<br />
+The first step in the R function is to create a new matrix, <code>clus.d</code>, that contains only the rows of the matrix <code>m</code> where the cluster label in the <code>clus</code> vector is equal to the cluster of interest <code>coi</code>. This is done using the <code>which()</code> function to find the indices of the rows that belong to the target cluster.</p></li>
+<li><p><strong>Calculating the Energy</strong>:<br />
+The function then calculates the energy (<code>Ek</code>) of the cluster by summing the pairwise Euclidean distances between all the rows in <code>clus.d</code>. The <code>dist()</code> function in R calculates the Euclidean distance between each pair of rows, and <code>sum()</code> is used to add these distances together.</p></li>
+<li><p><strong>Output</strong>:<br />
+The energy of the cluster (<code>Ek</code>) is returned as the result.</p></li>
+</ol>
+</div>
+<div id="how-it-works-in-r" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> How It Works in R<a href="implement-the-simulated-annealing-algorithm.html#how-it-works-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>R makes use of high-level functions like <code>which()</code> and <code>dist()</code>, which simplify the implementation but may introduce some overhead due to the creation of intermediate data structures.</li>
+</ul>
+</div>
+</div>
+<div id="the-rust-implementation" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> The Rust Implementation<a href="implement-the-simulated-annealing-algorithm.html#the-rust-implementation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The equivalent function in Rust is implemented with more explicit control over memory and data. Here’s the Rust code:</p>
+<pre><code>/// Function to compute the Euclidean distance between rows of data
+fn euclidean_distance(&amp;self, i: usize, j: usize) -&gt; f32 {
+    let v1 = &amp;self.data[i];
+    let v2 = &amp;self.data[j];
+    let mut sum: f32 = 0.0;
+    for i in 0..v1.len() {
+        sum += (v1[i] - v2[i]).powi(2);
+    }
+    sum.sqrt()
+}
+
+/// Calculates the cluster energy
+fn calc_ek(&amp;self, clus: usize) -&gt; f32 {
+    let ids = self.cluster_rows(clus);
+    let mut sum = 0.0;
+    for i in 0..ids.len() {
+        for j in i+1..ids.len() {
+            sum += self.euclidean_distance(ids[i], ids[j]);
+        }
+    }
+    sum
+}
+
+/// Which rows are in cluster `clus`?
+fn cluster_rows(&amp;self, clus: usize) -&gt; Vec&lt;usize&gt; {
+    let mut ret = Vec::&lt;usize&gt;::with_capacity(self.clusters.len());
+    for i in 0..self.clusters.len() {
+        if self.clusters[i] == clus {
+            ret.push(i);
+        }
+    }
+    ret
+}</code></pre>
+<div id="explanation-of-the-rust-code" class="section level3 hasAnchor" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Explanation of the Rust Code<a href="implement-the-simulated-annealing-algorithm.html#explanation-of-the-rust-code" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Euclidean Distance Calculation</strong>:<br />
+In Rust, the <code>euclidean_distance</code> function calculates the Euclidean distance between two rows. It takes the indices of the rows (<code>i</code> and <code>j</code>) and computes the sum of squared differences between corresponding elements in the rows. Finally, it returns the square root of the sum to get the distance.</p></li>
+<li><p><strong>Cluster Energy Calculation</strong>:<br />
+The <code>calc_ek</code> function calculates the energy of a cluster by:</p>
+<ul>
+<li>Finding the indices of the rows that belong to the specified cluster using the <code>cluster_rows</code> function.</li>
+<li>For each pair of rows in the cluster, it computes the Euclidean distance and adds it to the total sum, which represents the cluster energy.</li>
+</ul></li>
+<li><p><strong>Cluster Rows</strong>:<br />
+The <code>cluster_rows</code> function simply iterates over the <code>clusters</code> vector and collects the indices of the rows that belong to the specified cluster (<code>clus</code>). It returns a <code>Vec&lt;usize&gt;</code> containing these indices.</p></li>
+</ol>
+</div>
+<div id="how-it-works-in-rust" class="section level3 hasAnchor" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> How It Works in Rust<a href="implement-the-simulated-annealing-algorithm.html#how-it-works-in-rust" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Rust gives you more control over memory and data access. The program works with mutable references and does not create intermediate data structures unless necessary.</li>
+<li>The <code>cluster_rows</code> function is used to filter the rows based on the cluster, while the <code>euclidean_distance</code> function calculates the pairwise distance.</li>
+</ul>
+<p>That said, there are libraries that make Rust code look more like R, but I want to use as few libraries as possible here.</p>
+<hr />
+</div>
+</div>
+<div id="the-main-worker-function" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> The main worker function<a href="implement-the-simulated-annealing-algorithm.html#the-main-worker-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The R code provided implements the simulated annealing algorithm in the following steps:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Initial Cluster Assignment</strong>: A random assignment of K clusters to the rows of data is performed using <code>sample(1:K, nrow(data), replace = TRUE)</code>.</li>
+<li><strong>Energy Calculation</strong>: The function <code>calc.Ek()</code> calculates the energy of the cluster (the sum of distances between elements within the cluster).</li>
+<li><strong>Annealing Process</strong>: In each iteration, a row (data point) is randomly chosen and moved to a new cluster. The energy of the system is recalculated based on the new cluster assignment.</li>
+<li><strong>Acceptance Criteria</strong>: If the new configuration has a lower energy, it is accepted. If the energy is higher, the new configuration is accepted based on a probabilistic criterion derived from the temperature (simulating the annealing process).</li>
+<li><strong>Cooling</strong>: The temperature is updated in each iteration by multiplying it with a cooling factor.</li>
+</ol>
+<pre><code>#This is the main algorithm that performs the annealing. It takes the data,how
+#many K we are looking for, The number of iterations to perform, starting
+#temperature and the cooling factor.
+
+sa.ok &lt;- function(data,K,Iter,Temp,cool){
+
+  clusters &lt;- sample(1:K,nrow(data),replace = T) #initialise random clusters
+  
+  #clusters.o &lt;- clusters
+  
+  Es.old &lt;- calc.E.all(data,clusters)
+  #E.old &lt;- E.tot(Es.old)
+ 
+  for(i in 1:Iter){   # start iterating 
+    
+    clusters.new &lt;- clusters #copy the clusters
+    #Es.new &lt;- Es.old
+    
+    row.id &lt;- sample(1:nrow(data),1) #pick a gene at random
+    
+    from.c &lt;- clusters.new[row.id] # get the cluster it&#39;s moving from
+    #to.c &lt;- sample((1:K)[!(1:K) %in% from.c],1)
+    to.c &lt;- sample((1:K)[-from.c],1) # randomly choose a new cluster
+    
+    clusters.new[row.id] &lt;-  to.c # replace the old cluster with the new
+    
+    Es.new &lt;- Es.old #make a copy of the energies vector
+    # calc the energies of the two changed clusters
+    Es.new[from.c] &lt;- calc.Ek(data,clusters.new,from.c) 
+    Es.new[to.c] &lt;- calc.Ek(data,clusters.new,to.c)
+    
+    E.new &lt;- E.tot(Es.new) # calculate the new average E
+    E.old &lt;- E.tot(Es.old) # calculate the old average E
+    
+    if(E.new &lt; E.old){  # if new &lt; old accept the move copy the new clusters into the previous
+      clusters &lt;-  clusters.new #copy the new clusters into the previous
+      Es.old &lt;- Es.new # make Enew to Eold
+    }else{
+      
+      if(calc.exp(E.new,E.old,Temp) &gt; runif(1)){ #evaluate the exprssion against the random number from runif(1)
+        clusters &lt;- clusters.new #copy the new clusters into the previous
+        Es.old &lt;- Es.new  # make Enew to Eold
+      }
+    }
+    
+    {cat(&quot;\r&quot;,E.old)} #print out the energy to the screen
+    
+    Temp &lt;- Temp*cool # cool the system
+  }
+  clusters # return the clusters
+}</code></pre>
+<div id="rust-implementation" class="section level3 hasAnchor" number="4.5.1">
+<h3><span class="header-section-number">4.5.1</span> Rust Implementation<a href="implement-the-simulated-annealing-algorithm.html#rust-implementation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Rust version of the algorithm closely follows the same logic as the R implementation but is adapted for performance and memory safety in the Rust programming language:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Random Cluster Assignment</strong>: In Rust, clusters are assigned using <code>rand::random_range()</code> instead of the R <code>sample()</code> function.</li>
+<li><strong>Energy Calculation</strong>: The energy calculation (<code>calc_ek()</code>) is similar to R’s <code>calc.Ek()</code>, but it uses a more efficient loop-based calculation of Euclidean distances.</li>
+<li><strong>Annealing Process</strong>: The process for updating the cluster assignment and calculating energies is similar to the R version but is implemented with Rust’s ownership model and safety guarantees.</li>
+<li><strong>Acceptance Criteria</strong>: The acceptance criterion is implemented with the same logic, but uses Rust’s <code>f32::exp()</code> to handle the energy calculations and probabilistic decision-making.</li>
+<li><strong>Cooling</strong>: The temperature is updated similarly to R, using a multiplicative cooling factor.</li>
+</ol>
+<pre><code>    pub fn run( &amp;mut self, max_iter:usize, cool:f32 ) -&gt; usize {
+    
+      let mut it = 0;
+      // calculate the inital energies - this will be modified later
+      let mut old_energies= Vec::&lt;f32&gt;::with_capacity( self.k );
+      for i in 0..self.k {
+          old_energies.push( self.calc_ek( i ) );
+      }
+      
+      let mut old_total: f32 = old_energies.iter().sum::&lt;f32&gt;() / self.k as f32;
+      
+      let mut rand = rand::rng();
+      
+      for _ in 0..max_iter{
+          it += 1;
+          // initate all varaibales
+          let mut new_energies = old_energies.clone();
+          let moving_row = rand.random_range(0..self.data.len());
+          let move_from = self.clusters[moving_row];
+          let mut move_to = rand.random_range(0..self.k);
+          while move_from == move_to{
+              move_to = rand.random_range(0..self.k);
+          }
+          // move the row from to
+          self.clusters[moving_row] = move_to;
+          // calculate the new energies
+          new_energies[move_from] = self.calc_ek( move_from );
+          new_energies[move_to] = self.calc_ek( move_to );
+          
+          let new_total:u32 = new_energies.iter().sum::&lt;f32&gt;() / self.k as f32;
+          
+          if new_total &lt; old_total || 
+            (-((new_total - old_total) / self.temp)).exp() &gt; rand.random_range(0.0..1.0){
+              // that is a good one - keep this
+              old_energies[move_from] = new_energies[move_from];
+              old_energies[move_to] = new_energies[move_to];
+              old_total = new_total;
+          }else {
+              //this move was not good - drop it!
+              self.clusters[moving_row] = move_from;
+          }
+          // cool the system
+          self.temp *= cool;
+      }
+      it
+    }
+    </code></pre>
+<p>There is not a lot of differences in the implementation - the rust code is even one line shorter as the R one.</p>
+</div>
+</div>
+<div id="and-funtions-to-plot-and-write-the-data" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> And Funtions to Plot and Write the Data<a href="implement-the-simulated-annealing-algorithm.html#and-funtions-to-plot-and-write-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>I assume that by now you understand what the write_clusters function is doing.</p>
+<p>Plotting is a lot different from R; I have just obtained that function structure from ChatGPT and fixed some errors.
+Just take it as is.</p>
+<pre><code>use plotters::prelude::*;
+use std::error::Error;
+use std::io::Write;
+
+    pub fn write_clusters(&amp;self, ofile: &amp;str, sep: char) -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+        // Open the file in write mode
+        let mut file = File::create(ofile)?;
+
+        // Write the header (optional)
+        writeln!(file, &quot;Rowname{}Cluster&quot;, sep)?;
+
+        // Iterate over the rownames and clusters, writing them to the file
+        for (rowname, cluster) in self.rownames.iter().zip(self.clusters.iter()) {
+            writeln!(file, &quot;{}{}{}&quot;, rowname, sep, cluster+1)?;
+        }
+
+        Ok(())
+    }
+    
+    pub fn plot(&amp;self, prefix:&amp;str )-&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let output_dir = Path::new(prefix).parent().unwrap_or_else(|| Path::new(&quot;.&quot;));
+        std::fs::create_dir_all(output_dir)?;
+
+        for cluster_id in 0..self.k {
+            let filename = format!(&quot;{}_cluster_{}.png&quot;, prefix, cluster_id +1 );
+            let root = BitMapBackend::new(&amp;filename, (800, 600)).into_drawing_area();
+            root.fill(&amp;WHITE)?;
+
+            let mut chart = ChartBuilder::on(&amp;root)
+                .caption(format!(&quot;Cluster {}&quot;, cluster_id+1), (&quot;sans-serif&quot;, 20))
+                .margin(20)
+                .x_label_area_size(40)
+                .y_label_area_size(40)
+                .build_cartesian_2d(0..self.data[0].len(), 0.0f32..1.0)?; // Adjust Y range if needed
+
+            chart.configure_mesh().draw()?;
+
+            // Collect all rows belonging to this cluster
+            let cluster_data: Vec&lt;&amp;Vec&lt;f32&gt;&gt; = self.data.iter()
+                .zip(&amp;self.clusters)
+                .filter(|&amp;(_, &amp;c)| c == cluster_id)
+                .map(|(row, _)| row)
+                .collect();
+
+            // Draw each row as a line plot
+            for row in cluster_data {
+                chart.draw_series(LineSeries::new(
+                    row.iter().enumerate().map(|(x, &amp;y)| (x, y)),
+                    &amp;BLUE,
+                ))?;
+            }
+
+            root.present()?;
+            println!(&quot;Saved: {}&quot;, filename);
+        }
+
+        Ok(())
+    }
+</code></pre>
+<p>The plot function needs one more library:</p>
+<pre><code>cargo add plotters</code></pre>
+<p>If all has gone well we could improve on our tests!
+Add a second test case into the lib.rs file:</p>
+<pre><code>    #[test]
+    fn tes_scale01(){
+        let mut obj = SimulatedAnnealing::new( &quot;tests/data/Spellman_Yeast_Cell_Cycle.tsv&quot;, 8, 1000.0, &#39;\t&#39; );
+        obj.scale_01();
+        let exp5:Vec&lt;f32&gt; = vec![0.6989,0.0000,0.0968,0.3333,0.4301,1.0000,0.7419,0.7419,0.6022,0.7634,0.1720,0.4301,0.5161,0.7634,0.6989,0.6559];
+        let exp7:Vec&lt;f32&gt; = vec![0.0803,0.0000,0.2867,0.5849,0.9679,1.0000,0.7775,0.7156,0.5505,0.5459,0.4518,0.6193,0.8440,0.8532,0.9335,0.7752];
+        let mut dist: f32 = 0.0;
+        for i in 0..exp5.len() {
+            assert!(
+                (obj.data[5][i] - exp5[i]).abs() &lt; 1e-4,
+                &quot;Mismatch in gene 5 at index {}: got {}, expected {}&quot;,
+                i, obj.data[5][i], exp5[i]
+            );
+            assert!(
+                (obj.data[7][i] - exp7[i]).abs() &lt; 1e-4,
+                &quot;Mismatch in gene 7 at index {}: got {}, expected {}&quot;,
+                i, obj.data[7][i], exp7[i]
+            );
+            dist += (obj.data[7][i]-obj.data[5][i]).powi(2);
+        }
+        dist = dist.sqrt();
+        obj.clusters[5] = 8;
+        obj.clusters[7] = 8;
+        obj.k =9;
+        assert_eq!( obj.calc_ek(8), dist, &quot;the distance in cluster 8 (genes 5 and 7)&quot; );
+    }</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="implement-the-simulated-annealing-algorithm.html#cb41-1" tabindex="-1"></a><span class="fu">make</span> test <span class="at">-r</span></span></code></pre></div>
+<pre><code>## make[1]: Verzeichnis „/home/med-sal/git_Projects/tutorial_rust_simulated_annealing“ wird betreten
+## Building /home/med-sal/git_Projects/tutorial_rust_simulated_annealing/rust_stages/step3...
+##     Finished `release` profile [optimized] target(s) in 0.04s
+##      Running unittests src/lib.rs (target/release/deps/simulated_annealing-ec0f849373011f09)
+## 
+## running 2 tests
+## test tests::test_read_data ... ok
+## test tests::tes_scale01 ... ok
+## 
+## test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+## 
+##      Running unittests src/main.rs (target/release/deps/simulated_annealing-34887cf23462f205)
+## 
+## running 0 tests
+## 
+## test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+## 
+##      Running tests/test-SimulatedAnnealing.rs (target/release/deps/test_SimulatedAnnealing-fd16fac0ecee9aa3)
+## 
+## running 1 test
+## test test_simulated_annealing ... ok
+## 
+## test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+## 
+##    Doc-tests simulated_annealing
+## 
+## running 0 tests
+## 
+## test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+## 
+## Finished building /home/med-sal/git_Projects/tutorial_rust_simulated_annealing/rust_stages/step3. Logs are in step3_build.log
+## make[1]: Verzeichnis „/home/med-sal/git_Projects/tutorial_rust_simulated_annealing“ wird verlassen</code></pre>
+<p>This looks good, just that we can not use this library as we have not implemented the executable :-D</p>
+<p><a href="create-a-rust-project-and-implement-the-class.html" class="btn" id="prev">⬅️ Previous</a><a href="rust-program-logioc-is-implemented-in-main.html" class="btn" id="next">Next ➡️</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="create-a-rust-project-and-implement-the-class.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="rust-program-logioc-is-implemented-in-main.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-SimulatedAnnealing.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

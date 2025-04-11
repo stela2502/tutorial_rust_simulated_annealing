@@ -1,0 +1,30 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+.btn {
+  background-color: #FFFFFF;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+}
+.btn:hover {
+  background-color: #0056b3;
+}
+#prev {
+  float: left;
+}
+
+#next {
+  float: right;
+}
