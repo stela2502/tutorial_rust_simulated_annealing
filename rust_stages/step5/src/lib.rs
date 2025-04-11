@@ -79,15 +79,17 @@ impl SimulatedAnnealing {
      pub fn scale_01( &mut self){
         for row in &mut self.data {
             let mut min = f32::INFINITY;
-            let mut max = f32::NEG_INFINITY;
+            let mut range = f32::NEG_INFINITY;
+
             for i in 0..row.len(){
                 min = min.min(row[i]);
-                max = max.max(row[i]);
+                range = range.max(row[i]);
            
             }
+            range -= min;
             // Now apply the scaling using the min/max in place
             for entry in row {
-                *entry = (*entry - min) / (max - min);  // In-place scaling
+                *entry = (*entry - min) / range;  // In-place scaling
             }
         }
         let n = self.data.len();
