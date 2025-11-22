@@ -1,0 +1,198 @@
+
+# Ownership --- Rust's Core Memory Model
+
+Rust's **ownership system** ensures memory safety *without* a garbage
+collector.
+
+### The basic rules:
+
+1.  **Each value has one owner.**
+2.  **Only one owner exists at a time.**
+3.  **When the owner goes out of scope, the value is dropped.**
+
+Example:
+
+``` rust
+fn main() {
+    let a = String::from("hello");
+    let b = a;        // ownership moves to b
+
+    // println!("{}", a);  // ERROR: a no longer owns the string
+    println!("{}", b);     // OK
+}
+```
+
+This model prevents:
+
+-   double frees\
+-   use-after-free\
+-   dangling pointers
+
+And it does so entirely at compile time.
+
+------------------------------------------------------------------------
+
+# Putting It All Together
+
+A Rust variable is defined by:
+
+1.  **Its type** --- fixed and enforced\
+2.  **Its ownership** --- who controls the value\
+3.  **Its scope** --- when it is dropped\
+4.  **Its mutability** --- whether it can change
+
+Rust combines all of these into one coherent safety model.
+
+This is why even small scripts are excellent practice: every compiler
+message teaches you more about how Rust thinks.
+
+------------------------------------------------------------------------
+
+# Ownership in Rust
+
+One of Rust's most important and unique features is its **ownership
+model**. It ensures **memory safety** by enforcing strict rules about
+**who owns data** and when data is **dropped (freed)**.
+
+------------------------------------------------------------------------
+
+## Ownership Rules in Rust
+
+1.  **Each value in Rust has a single owner**.\
+2.  **When the owner goes out of scope**, Rust **automatically frees the
+    memory**.\
+3.  **You cannot have more than one owner at a time**. If you want to
+    **share or transfer access**, you must use **borrowing** or
+    **cloning**.
+
+------------------------------------------------------------------------
+
+## Example 1: Ownership in Action
+
+``` rust
+fn main() {
+    let s1 = String::from("Hello, Rust!");  // s1 owns the String
+
+    let s2 = s1;  // Ownership moves from s1 to s2
+    // println!("{}", s1);  // ERROR: s1 is no longer valid
+
+    println!("{}", s2);  // Works, because s2 owns the data
+}
+```
+
+### Explanation
+
+-   `s1` initially owns the `String`.
+-   Assigning `s1` to `s2` **moves ownership**.
+-   `s1` becomes invalid, and using it triggers a compiler error:
+
+```{=html}
+<!-- -->
+```
+    error[E0382]: use of moved value: `s1`
+
+This ensures Rust never has two owners pointing at the same heap
+allocation, eliminating memory safety issues.
+
+------------------------------------------------------------------------
+
+## Example 2: Borrowing (Immutable & Mutable)
+
+Rust lets you **borrow** data using references instead of transferring
+ownership.
+
+``` rust
+fn main() {
+    let s1 = String::from("Hello, Rust!");
+
+    // Immutable borrow
+    let s2 = &s1;
+    println!("{}", s2);
+
+    // Mutable borrow
+    let mut s3 = String::from("Mutable borrow!");
+    let s4 = &mut s3;
+    s4.push_str(" Now it’s mutable!");
+    println!("{}", s4);
+}
+```
+
+### Borrowing Rules
+
+-   **Immutable borrows (`&T`)**
+    -   Multiple immutable borrows allowed\
+    -   Borrowed data **cannot** be modified
+-   **Mutable borrow (`&mut T`)**
+    -   Only *one* mutable borrow allowed\
+    -   No immutable borrows allowed at the same time
+
+Rust prevents:
+
+-   Data races\
+-   Concurrent mutation + reading\
+-   Dangling references
+
+------------------------------------------------------------------------
+
+## Example 3: Combining Types and Ownership
+
+Strict typing and ownership often appear together.
+
+``` rust
+fn main() {
+    let num: i32 = 42;     // Copy type
+    let num_copy = num;    // Copies, does not move
+    println!("num: {}, num_copy: {}", num, num_copy);
+
+    let s1 = String::from("Rust Ownership!");  // Non-Copy type
+    let s2 = s1;                               // Moves ownership
+    // println!("{}", s1);  // ERROR: moved value
+    println!("{}", s2);
+}
+```
+
+### Output
+
+    num: 42, num_copy: 42
+    Rust Ownership!
+
+### Why the difference?
+
+-   **Copy types** (`i32`, `bool`, `f64`, etc.)
+    -   Stored on the stack\
+    -   Duplicated on assignment
+-   **Non-copy types** (`String`, `Vec<T>`, etc.)
+    -   Stored on the heap\
+    -   Ownership moves unless explicitly cloned
+
+------------------------------------------------------------------------
+
+## Summary: Why Ownership Matters
+
+-   Rust's type system ensures **compile-time type safety**.\
+-   The ownership system ensures **memory safety without a garbage
+    collector**.\
+-   Moving, borrowing, and strict typing work together to prevent:
+    -   Use-after-free\
+    -   Double frees\
+    -   Data races\
+    -   Dangling pointers
+
+Even though early Rust exercises may not trigger these issues,
+understanding ownership is **essential** once you begin writing real
+Rust programs.
+
+Rust's compiler is strict because it makes your software **fast, safe,
+and predictable**.
+
+------------------------------------------------------------------------
+
+
+```{r, echo=FALSE, results='asis'}
+if (!is.null(params[['previous']])) {
+  cat(sprintf('<a href="%s" class="btn" id="prev">⬅️ Previous</a>', params[['previous']]))
+}
+if (!is.null(params[['next']])) {
+  cat(sprintf('<a href="%s" class="btn" id="next">Next ➡️</a>', params[['next']]))
+}
+```
